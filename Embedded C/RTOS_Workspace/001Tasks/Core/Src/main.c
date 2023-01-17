@@ -309,6 +309,9 @@ static void task1_handler(void* parameters)
 	{
 		// Print the string that's received through the (parameters) argument
 		printf("%s\n",(char*)parameters);
+		// Run the task yield function to willingly give up the CPU
+		// Only in cooperative scheduling (configUSE_PREEMPTION = 0 in FreeRTOSConfig.h)
+		taskYIELD();
 	}
 
 }
@@ -319,6 +322,9 @@ static void task2_handler(void* parameters)
 	{
 		// Print the string that's received through the (parameters) argument
 		printf("%s\n",(char*)parameters);
+		// Run the task yield function to willingly give up the CPU
+		// Only in cooperative scheduling (configUSE_PREEMPTION = 0 in FreeRTOSConfig.h)
+		taskYIELD();
 	}
 
 }
