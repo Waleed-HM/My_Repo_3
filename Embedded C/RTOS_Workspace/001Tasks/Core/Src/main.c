@@ -96,6 +96,9 @@ int main(void)
   status = xTaskCreate(task2_handler, "Task-2", 200, "Hello World from Task-2", 2,&task2_handle);
   configASSERT(status == pdPASS);
 
+  // Start the FreeRTOS scheduler
+  vTaskStartScheduler();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -301,11 +304,21 @@ static void MX_GPIO_Init(void)
 
 static void task1_handler(void* parameters)
 {
+	while(1)
+	{
+		// Print the string that's received through the (parameters) argument
+		printf("%s\n",(char*)parameters);
+	}
 
 }
 
 static void task2_handler(void* parameters)
 {
+	while(1)
+	{
+		// Print the string that's received through the (parameters) argument
+		printf("%s\n",(char*)parameters);
+	}
 
 }
 /* USER CODE END 4 */
