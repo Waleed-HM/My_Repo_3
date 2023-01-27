@@ -318,10 +318,17 @@ static void task1_handler(void* parameters)
 	while(1)
 	{
 		// Print the string that's received through the (parameters) argument
-		printf("%s\n",(char*)parameters);
+		//printf("%s\n",(char*)parameters);
+
+		// Using the SEGGER printf functionality (must be a formatted string)
+		char msg[100];
+		snprintf(msg,100,"%s\n",(char*)parameters);
+		SEGGER_SYSVIEW_PrintfTarget(msg);
+
+
 		// Run the task yield function to willingly give up the CPU
 		// Only in cooperative scheduling (configUSE_PREEMPTION = 0 in FreeRTOSConfig.h)
-		//taskYIELD();
+		taskYIELD();
 	}
 
 }
@@ -331,10 +338,16 @@ static void task2_handler(void* parameters)
 	while(1)
 	{
 		// Print the string that's received through the (parameters) argument
-		printf("%s\n",(char*)parameters);
+		//printf("%s\n",(char*)parameters);
+
+		// Using the SEGGER printf functionality (must be a formatted string)
+		char msg[100];
+		snprintf(msg,100,"%s\n",(char*)parameters);
+		SEGGER_SYSVIEW_PrintfTarget(msg);
+
 		// Run the task yield function to willingly give up the CPU
 		// Only in cooperative scheduling (configUSE_PREEMPTION = 0 in FreeRTOSConfig.h)
-		//taskYIELD();
+		taskYIELD();
 	}
 
 }
