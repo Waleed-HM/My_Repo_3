@@ -1,1 +1,13 @@
 #!/bin/bash
+
+# Author: Waleed Alhammami
+# Date Created: 27/01/2023
+# Last Modified: 27/01/2023
+
+# Description: This script serves to back up all files in the home directory
+
+# Usage
+# Course first project
+
+tar -cvf ~/Git_Repos/My_Repo_3/Bash/Bash_Course/Section1_Basics/my_backup_"$(date +%d-%m-%Y_%H-%M-%S)".tar ~/* 2>/dev/null
+exit 0
