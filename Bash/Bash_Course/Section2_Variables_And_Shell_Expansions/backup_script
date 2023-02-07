@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Author: Waleed Alhammami
+# Date Created: 27/01/2023
+# Last Modified: 30/01/2023
+
+# Description: This script serves to back up all files in the home directory
+
+# Usage
+# Course second project
+
+currentdir=$(pwd)
+echo "Hello ${USER^}"
+echo "I will now back up your home directory, $HOME"
+echo "You are running this script from $currentdir"
+echo "Therefore, I will save the backup in $currentdir"
+tar -cf $currentdir/my_backup_"$(date +%d-%m-%Y_%H-%M-%S)".tar ~/* 2>/dev/null
+echo "Backup Completed Successfully"
+exit 0
