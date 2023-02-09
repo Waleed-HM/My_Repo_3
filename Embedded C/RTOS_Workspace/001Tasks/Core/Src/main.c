@@ -97,9 +97,12 @@ int main(void)
   // This is to allow the SEGGER systemview to record time stamps of events
   DWT_CTRL |= (1 << 0);
 
+  // Initialize SEGGER UART recording
+  SEGGER_UART_init(500000);
+
   // Configure and start the SEGGER systemview recording
   SEGGER_SYSVIEW_Conf();
-  SEGGER_SYSVIEW_Start();
+  //SEGGER_SYSVIEW_Start();			// Happens in SEGGER_UART_init()
 
   // Create FreeRTOS tasks
   status = xTaskCreate(task1_handler, "Task-1", 200, "Hello World from Task-1", 2,&task1_handle);
