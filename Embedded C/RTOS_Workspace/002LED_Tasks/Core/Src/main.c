@@ -31,6 +31,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define led_red			LD5_Pin
+#define led_green		LD4_Pin
+#define led_blue		LD2_Pin
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -41,14 +44,16 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+#define DWT_CTRL	(*(volatile uint32_t*)0xE0001000)		// DWT_CTRL register
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void led_red_handler(void*);
+static void led_green_handler(void*);
+static void led_blue_handler(void*);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -288,7 +293,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void led_red_handler(void* parameters)
+{
 
+}
+
+static void led_green_handler(void* parameters)
+{
+
+}
+
+static void led_blue_handler(void* parameters)
+{
+
+}
 /* USER CODE END 4 */
 
 /**
