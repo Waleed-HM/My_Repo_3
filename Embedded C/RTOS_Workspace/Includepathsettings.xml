@@ -16,7 +16,6 @@
       <includepath>C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\OS</includepath>
       <includepath>C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\SEGGER</includepath>
       <includepath>C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\Config</includepath>
-      <includepath>C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\FreeRTOS</includepath>
     </language>
     <language name="Object File"/>
   </section>

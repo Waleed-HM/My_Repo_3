@@ -56,7 +56,6 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\OS&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\SEGGER&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\SEGGER\Config&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\walee\Desktop\Programming\Repositories\My_Repo_3\Embedded C\RTOS_Workspace\Common\ThirdParty\FreeRTOS&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.301083839" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
