@@ -69,7 +69,7 @@
 
 
 /* Software timer definitions. */
-#define configUSE_TIMERS				0		// 1 : use software timers, 0 : do not use software timers
+#define configUSE_TIMERS				1		// 1 : use software timers, 0 : do not use software timers
 #define configTIMER_TASK_PRIORITY		( 2 )
 #define configTIMER_QUEUE_LENGTH		10
 #define configTIMER_TASK_STACK_DEPTH	( configMINIMAL_STACK_SIZE * 2 )

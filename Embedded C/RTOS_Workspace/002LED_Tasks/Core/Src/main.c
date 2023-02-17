@@ -34,8 +34,11 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define led_red			LD5_Pin
+#define led_red_gpio	LD5_GPIO_Port
 #define led_green		LD4_Pin
+#define led_green_gpio	LD4_GPIO_Port
 #define led_blue		LD2_Pin
+#define led_blue_gpio	LD2_GPIO_Port
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -70,7 +73,10 @@ static void led_blue_handler(void*);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  TaskHandle_t led_blue_task;
+  TaskHandle_t led_green_task;
+  TaskHandle_t led_red_task;
+  BaseType_t status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -92,6 +98,25 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+
+  // Enable the CYCCNT register by setting the 0th bit
+  // This is to allow the SEGGER systemview to record time stamps of events
+  DWT_CTRL |= (1<<0);
+
+  // Configure and start the SEGGER systemview recording
+  //SEGGER_SYSVIEW_Conf();
+  //SEGGER_SYSVIEW_Start();
+
+  // Create the FreeRTOS leds toggling tasks
+  status = xTaskCreate(led_red_handler, "LED_red_task", 200, NULL, 2, &led_red_task);
+  configASSERT(status == pdPASS);
+  status = xTaskCreate(led_green_handler, "LED_green_task", 200, NULL, 2, &led_green_task);
+  configASSERT(status == pdPASS);
+  status = xTaskCreate(led_blue_handler, "LED_blue_task", 200, NULL, 2, &led_blue_task);
+  configASSERT(status == pdPASS);
+
+  // Start the FreeRTOS scheduler
+  vTaskStartScheduler();
 
   /* USER CODE END 2 */
 
@@ -297,17 +322,32 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 static void led_red_handler(void* parameters)
 {
-
+	while(1)
+	{
+		//SEGGER_SYSVIEW_PrintfTarget("Toggling red LED");
+		HAL_GPIO_TogglePin(led_red_gpio, led_red);
+		vTaskDelay(1000);
+	}
 }
 
 static void led_green_handler(void* parameters)
 {
-
+	while(1)
+	{
+		//SEGGER_SYSVIEW_PrintfTarget("Toggling green LED");
+		HAL_GPIO_TogglePin(led_green_gpio, led_green);
+		vTaskDelay(800);
+	}
 }
 
 static void led_blue_handler(void* parameters)
 {
-
+	while(1)
+	{
+		//SEGGER_SYSVIEW_PrintfTarget("Toggling blue LED");
+		HAL_GPIO_TogglePin(led_blue_gpio, led_blue);
+		vTaskDelay(400);
+	}
 }
 /* USER CODE END 4 */
 
