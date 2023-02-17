@@ -59,6 +59,8 @@ static void MX_GPIO_Init(void);
 static void led_red_handler(void*);
 static void led_green_handler(void*);
 static void led_blue_handler(void*);
+
+extern void SEGGER_UART_init(uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -99,12 +101,16 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  // SEGGER UART recording
+  SEGGER_UART_init(500000);
+
   // Enable the CYCCNT register by setting the 0th bit
   // This is to allow the SEGGER systemview to record time stamps of events
   DWT_CTRL |= (1<<0);
 
+
   // Configure and start the SEGGER systemview recording
-  //SEGGER_SYSVIEW_Conf();
+  SEGGER_SYSVIEW_Conf();
   //SEGGER_SYSVIEW_Start();
 
   // Create the FreeRTOS leds toggling tasks
@@ -324,9 +330,10 @@ static void led_red_handler(void* parameters)
 {
 	while(1)
 	{
-		//SEGGER_SYSVIEW_PrintfTarget("Toggling red LED");
+		SEGGER_SYSVIEW_PrintfTarget("Toggling red LED");
 		HAL_GPIO_TogglePin(led_red_gpio, led_red);
-		vTaskDelay(1000);
+		//vTaskDelay(1000);
+		HAL_Delay(1000);
 	}
 }
 
@@ -334,9 +341,10 @@ static void led_green_handler(void* parameters)
 {
 	while(1)
 	{
-		//SEGGER_SYSVIEW_PrintfTarget("Toggling green LED");
+		SEGGER_SYSVIEW_PrintfTarget("Toggling green LED");
 		HAL_GPIO_TogglePin(led_green_gpio, led_green);
-		vTaskDelay(800);
+		//vTaskDelay(800);
+		HAL_Delay(800);
 	}
 }
 
@@ -344,9 +352,10 @@ static void led_blue_handler(void* parameters)
 {
 	while(1)
 	{
-		//SEGGER_SYSVIEW_PrintfTarget("Toggling blue LED");
+		SEGGER_SYSVIEW_PrintfTarget("Toggling blue LED");
 		HAL_GPIO_TogglePin(led_blue_gpio, led_blue);
-		vTaskDelay(400);
+		//vTaskDelay(400);
+		HAL_Delay(400);
 	}
 }
 /* USER CODE END 4 */
