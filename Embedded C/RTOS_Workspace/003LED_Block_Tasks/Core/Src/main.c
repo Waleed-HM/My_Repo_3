@@ -328,31 +328,43 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 static void led_red_handler(void* parameters)
 {
+	TickType_t last_wakeup_time;
+	last_wakeup_time = xTaskGetTickCount();
+
 	while(1)
 	{
 		SEGGER_SYSVIEW_PrintfTarget("Toggling red LED");
 		HAL_GPIO_TogglePin(led_red_gpio, led_red);
-		vTaskDelay(pdMS_TO_TICKS(1000));
+		//vTaskDelay(pdMS_TO_TICKS(1000));
+		vTaskDelayUntil(&last_wakeup_time,pdMS_TO_TICKS(400));
 	}
 }
 
 static void led_green_handler(void* parameters)
 {
+	TickType_t last_wakeup_time;
+	last_wakeup_time = xTaskGetTickCount();
+
 	while(1)
 	{
 		SEGGER_SYSVIEW_PrintfTarget("Toggling green LED");
 		HAL_GPIO_TogglePin(led_green_gpio, led_green);
-		vTaskDelay(pdMS_TO_TICKS(800));
+		//vTaskDelay(pdMS_TO_TICKS(800));
+		vTaskDelayUntil(&last_wakeup_time,pdMS_TO_TICKS(300));
 	}
 }
 
 static void led_blue_handler(void* parameters)
 {
+	TickType_t last_wakeup_time;
+	last_wakeup_time = xTaskGetTickCount();
+
 	while(1)
 	{
 		SEGGER_SYSVIEW_PrintfTarget("Toggling blue LED");
 		HAL_GPIO_TogglePin(led_blue_gpio, led_blue);
-		vTaskDelay(pdMS_TO_TICKS(400));
+		//vTaskDelay(pdMS_TO_TICKS(400));
+		vTaskDelayUntil(&last_wakeup_time,pdMS_TO_TICKS(200));
 	}
 }
 /* USER CODE END 4 */
