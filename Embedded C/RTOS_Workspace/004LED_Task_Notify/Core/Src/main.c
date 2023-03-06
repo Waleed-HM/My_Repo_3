@@ -67,7 +67,12 @@ extern void SEGGER_UART_init(uint32_t);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+TaskHandle_t red_led_handle;
+TaskHandle_t orange_led_handle;
+TaskHandle_t green_led_handle;
+TaskHandle_t button_handle;
 
+TaskHandle_t volatile next_task_handle = NULL;				// needed when we are going to delete tasks
 /* USER CODE END 0 */
 
 /**
@@ -77,7 +82,7 @@ extern void SEGGER_UART_init(uint32_t);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  BaseType_t status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,10 +112,24 @@ int main(void)
   // This is to allow the SEGGER systemview to record time stamps of events
   DWT_CTRL |= (1<<0);
 
-
   // Configure and start the SEGGER systemview recording
   SEGGER_SYSVIEW_Conf();
   //SEGGER_SYSVIEW_Start();
+
+  // creating tasks
+  status = xTaskCreate(red_led_handler, "Red Led Task", 200, NULL, 1, &red_led_handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(orange_led_handler, "Orange Led Task", 200, NULL, 2, &orange_led_handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(green_led_handler, "Green Led Task", 200, NULL, 3, &green_led_handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(button_handler, "Button Task", 200, NULL, 4, &button_handle);
+  configASSERT(status == pdPASS);
+
+  next_task_handle = green_led_handle;
 
   // Start the FreeRTOS scheduler
   vTaskStartScheduler();
@@ -121,8 +140,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	HAL_GPIO_TogglePin(GPIOB, Red_Led | Green_Led | Orange_Led);
-	HAL_Delay(1000);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -257,12 +275,40 @@ static void orange_led_handler(void* parameters)
 
 static void green_led_handler(void* parameters)
 {
-
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Green LED!");
+		HAL_GPIO_TogglePin(Green_Led_Port, Green_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(1000));
+		if(status == pdTRUE)
+		{
+			next_task_handle = orange_led_handle;
+			HAL_GPIO_WritePin(Green_Led_Port,Green_Led,GPIO_PIN_SET);
+			vTaskDelete(NULL);
+		}
+	}
 }
 
 static void button_handler(void* parameters)
 {
+	uint8_t current_button_value = 0;
+	uint8_t previous_button_value = 0;
 
+	while(1)
+	{
+		// In the board we are using, the Button pin (PC13) is normally pulled up
+		// When the button is pressed, it gets pulled down
+		// So the read pin function should render 0 if the button is pressed
+		current_button_value = HAL_GPIO_ReadPin(Button_Port, Button);
+
+		if(!current_button_value && (previous_button_value))
+		{
+			xTaskNotify(next_task_handle,0,eNoAction);
+		}
+		previous_button_value = current_button_value;
+		vTaskDelay(pdMS_TO_TICKS(10));
+	}
 }
 
 #ifdef  USE_FULL_ASSERT
