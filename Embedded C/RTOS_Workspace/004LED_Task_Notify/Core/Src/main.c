@@ -50,14 +50,19 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+#define DWT_CTRL	(*(volatile uint32_t*)0xE0001000)		// DWT_CTRL register
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+static void red_led_handler(void*);
+static void orange_led_handler(void*);
+static void green_led_handler(void*);
+static void button_handler(void*);
 
+extern void SEGGER_UART_init(uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -95,6 +100,20 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  // SEGGER UART recording
+  SEGGER_UART_init(500000);
+
+  // Enable the CYCCNT register by setting the 0th bit
+  // This is to allow the SEGGER systemview to record time stamps of events
+  DWT_CTRL |= (1<<0);
+
+
+  // Configure and start the SEGGER systemview recording
+  SEGGER_SYSVIEW_Conf();
+  //SEGGER_SYSVIEW_Start();
+
+  // Start the FreeRTOS scheduler
+  vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,7 +121,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	HAL_GPIO_TogglePin(GPIOB, Red_Led | Green_Led | Orange_Led);
+	HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -223,6 +243,26 @@ void Error_Handler(void)
   {
   }
   /* USER CODE END Error_Handler_Debug */
+}
+
+static void red_led_handler(void* parameters)
+{
+
+}
+
+static void orange_led_handler(void* parameters)
+{
+
+}
+
+static void green_led_handler(void* parameters)
+{
+
+}
+
+static void button_handler(void* parameters)
+{
+
 }
 
 #ifdef  USE_FULL_ASSERT
