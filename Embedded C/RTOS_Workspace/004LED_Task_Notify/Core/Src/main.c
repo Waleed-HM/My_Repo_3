@@ -265,12 +265,47 @@ void Error_Handler(void)
 
 static void red_led_handler(void* parameters)
 {
-
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Red LED!");
+		HAL_GPIO_TogglePin(Red_Led_Port, Red_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(400));
+		if(status == pdTRUE)
+		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
+			next_task_handle = NULL;
+			xTaskResumeAll();
+			HAL_GPIO_WritePin(Red_Led_Port,Red_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Red LED task!");
+			vTaskDelete(NULL);
+			vTaskDelete(button_handle);
+		}
+	}
 }
 
 static void orange_led_handler(void* parameters)
 {
-
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Orange LED!");
+		HAL_GPIO_TogglePin(Orange_Led_Port, Orange_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(800));
+		if(status == pdTRUE)
+		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
+			next_task_handle = red_led_handle;
+			xTaskResumeAll();
+			HAL_GPIO_WritePin(Orange_Led_Port,Orange_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Orange LED task!");
+			vTaskDelete(NULL);
+		}
+	}
 }
 
 static void green_led_handler(void* parameters)
@@ -283,8 +318,13 @@ static void green_led_handler(void* parameters)
 		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(1000));
 		if(status == pdTRUE)
 		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
 			next_task_handle = orange_led_handle;
+			xTaskResumeAll();
 			HAL_GPIO_WritePin(Green_Led_Port,Green_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Green LED task!");
 			vTaskDelete(NULL);
 		}
 	}
