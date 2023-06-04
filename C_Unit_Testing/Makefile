@@ -5,7 +5,7 @@ CXX ?= g++
 # Settings
 SRC_DIR = ./src
 TEST_DIR = ./tests
-BUILD_DIR = ./build
+BUILD_DIR = .
 NAME = app.elf
 
 #Search path for header files
@@ -36,7 +36,7 @@ $(COBJECTS) : %.o : %.c
 # Build the target applications
 .PHONE: $(NAME)
 $(NAME): $(COBJECTS)
-	$(CC) $(COBJECTS) -o $(BUILD_DIR)/&(NAME) $(LDFLAGS)
+	$(CC) $(COBJECTS) -o $(BUILD_DIR)/$(NAME) $(LDFLAGS)
 
 # Remove compiled object files
 .PHONY: clean
