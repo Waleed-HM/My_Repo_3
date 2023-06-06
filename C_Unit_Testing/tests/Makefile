@@ -8,3 +8,8 @@ all: $(TEST_DIRS)
 # Run tests
 $(TEST_DIRS):
 	make -C $@
+
+# Clean tests
+.PHONY: clean
+clean:
+	$(foreach DIR, $(TEST_DIRS), make -C $(DIR) clean)
