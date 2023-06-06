@@ -34,7 +34,7 @@ $(COBJECTS) : %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Build the target applications
-.PHONE: $(NAME)
+.PHONY: $(NAME)
 $(NAME): $(COBJECTS)
 	$(CC) $(COBJECTS) -o $(BUILD_DIR)/$(NAME) $(LDFLAGS)
 
