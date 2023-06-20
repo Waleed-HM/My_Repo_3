@@ -21,12 +21,20 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <FreeRTOS.h>
+#include <task.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define Button 					GPIO_PIN_13
+#define Button_Port				GPIOC
+#define Red_Led					GPIO_PIN_5
+#define Red_Led_Port			GPIOB
+#define Orange_Led				GPIO_PIN_1
+#define Orange_Led_Port			GPIOB
+#define Green_Led				GPIO_PIN_7
+#define Green_Led_Port			GPIOB
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -41,19 +49,28 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+#define DWT_CTRL	(*(volatile uint32_t*)0xE0001000)		// DWT_CTRL register
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+void button_interrupt_handler(void);
+static void red_led_handler(void*);
+static void orange_led_handler(void*);
+static void green_led_handler(void*);
 
+extern void SEGGER_UART_init(uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+TaskHandle_t red_led_handle;
+TaskHandle_t orange_led_handle;
+TaskHandle_t green_led_handle;
 
+TaskHandle_t volatile next_task_handle = NULL;				// needed when we are going to delete tasks
 /* USER CODE END 0 */
 
 /**
@@ -63,7 +80,7 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  BaseType_t status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -86,6 +103,31 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  // SEGGER UART recording
+  SEGGER_UART_init(500000);
+
+  // Enable the CYCCNT register by setting the 0th bit
+  // This is to allow the SEGGER systemview to record time stamps of events
+  DWT_CTRL |= (1<<0);
+
+  // Configure and start the SEGGER systemview recording
+  SEGGER_SYSVIEW_Conf();
+  //SEGGER_SYSVIEW_Start();
+
+  // creating tasks
+  status = xTaskCreate(red_led_handler, "Red Led Task", 200, NULL, 1, &red_led_handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(orange_led_handler, "Orange Led Task", 200, NULL, 2, &orange_led_handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(green_led_handler, "Green Led Task", 200, NULL, 3, &green_led_handle);
+  configASSERT(status == pdPASS);
+
+  next_task_handle = green_led_handle;
+
+  // Start the FreeRTOS scheduler
+  vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -181,6 +223,78 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void button_interrupt_handler(void)
+{
+	traceISR_ENTER();  // ----> This is to help SEGGER software detect the entry of an interrupt
+	xTaskNotifyFromISR(next_task_handle,0,eNotifyAction,NULL);
+}
+
+static void red_led_handler(void* parameters)
+{
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Red LED!");
+		HAL_GPIO_TogglePin(Red_Led_Port, Red_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(400));
+		if(status == pdTRUE)
+		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
+			next_task_handle = NULL;
+			xTaskResumeAll();
+			HAL_GPIO_WritePin(Red_Led_Port,Red_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Red LED task!");
+			vTaskDelete(NULL);
+			vTaskDelete(button_handle);
+		}
+	}
+}
+
+static void orange_led_handler(void* parameters)
+{
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Orange LED!");
+		HAL_GPIO_TogglePin(Orange_Led_Port, Orange_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(800));
+		if(status == pdTRUE)
+		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
+			next_task_handle = red_led_handle;
+			xTaskResumeAll();
+			HAL_GPIO_WritePin(Orange_Led_Port,Orange_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Orange LED task!");
+			vTaskDelete(NULL);
+		}
+	}
+}
+
+static void green_led_handler(void* parameters)
+{
+	BaseType_t status;
+	while(1)
+	{
+		SEGGER_SYSVIEW_PrintfTarget("Toggling Green LED!");
+		HAL_GPIO_TogglePin(Green_Led_Port, Green_Led);
+		status = xTaskNotifyWait(0,0,NULL,pdMS_TO_TICKS(1000));
+		if(status == pdTRUE)
+		{
+			// We suspend the scheduler during the shared variable change
+			// This is to ensure it doesn't fail because of pre-emption or such
+			vTaskSuspendAll();
+			next_task_handle = orange_led_handle;
+			xTaskResumeAll();
+			HAL_GPIO_WritePin(Green_Led_Port,Green_Led,GPIO_PIN_SET);
+			SEGGER_SYSVIEW_PrintfTarget("Deleting Green LED task!");
+			vTaskDelete(NULL);
+		}
+	}
+}
 
 /* USER CODE END 4 */
 
@@ -219,6 +333,8 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
+
+
 
 #ifdef  USE_FULL_ASSERT
 /**
