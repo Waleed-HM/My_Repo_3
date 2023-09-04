@@ -4,22 +4,25 @@
 
 # Targets (names for certain operations that we want to assign)
 
+# /* One way to build the project is like this: */
 
-build:    # name for the operation 
-	gcc main.c -c main.o			# to create the obejct file
-	gcc main.o -o main				# to link it to an executable
+# build:    # name for the operation 
+# 	gcc main.c -c main.o			# compile main.c into an object file
+# 	gcc my_lib.c -c my_lib.o		# compile my_lib.c into an object file
+# 	gcc main.o my_lib.o -o main		# link both files into an executable
 
-# note : we can also do those in one line : gcc main.c -o main
+# /* Another way is by configuring it to make files separately: */
+build: my_lib.o main.o 		# ----------> those are prerequisits, make will not attempt this target until they exist
+	gcc main.o my_lib.o -o main
 
-# important : operations commands must always be after a tab
-# gcc : compiler name
-# main.c : file to be compiled (source file)
-# main.o : object file
-# main : name of the executable
+main.o:
+# This will run as : gcc main.c -c main.o
+	gcc main.c -c 	
 
-# important :
-# The "make" command by itself performs the first target in the Makefile by default
-# If we want it to perform a different target, we should specify its name after the make command
+my_lib.o:
+# This will run as : gcc my_lib.c -c my_lib.o
+	gcc my_lib.c -c 
+
 
 execute:
 	./main
