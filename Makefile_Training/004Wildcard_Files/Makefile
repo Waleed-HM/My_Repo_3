@@ -32,12 +32,15 @@ endif
 
 COMPILER_CALL = $(CC) $(CFLAGS)		# Remember : the $ is needed to access the value of a variable
 
+# A list of object files (useful when we have many source files)
+C_OBJECTS = my_lib.o main.o
+
 # Note : we can override some variable values when we call make 
 # Ex : make build C_STANDARD=c11
 
 # We can now use the defined COMPILER_CALL variable when needed everywhere in the file
-build: my_lib.o main.o 		
-	$(COMPILER_CALL) main.o my_lib.o $(LDFLAGS)-o $(EXECUTABLE_NAME)
+build: $(C_OBJECTS)
+	$(COMPILER_CALL) $(C_OBJECTS) $(LDFLAGS)-o $(EXECUTABLE_NAME)
 
 main.o:
 # This will run as : gcc main.c -c main.o
@@ -56,3 +59,21 @@ clean:
 	rm -f main
 
 
+###################
+#### PATTERNS #####
+###################
+
+#Patterns are used when otherwise we need to add too many targets because we have too many source files
+
+# $@: The file name of the target
+# $<: The name of the first dependecy
+# $^: The names of all prerequisites
+
+#For every c file in our current directory, generate a corresponding object file with the same name (the %)
+%.o: %.c
+	$(COMPILER_CALL) -c $< -o $@
+
+
+# The past two lines would translate to : (for main.c)
+# main.o: main.c
+# 	$(COMPILER_CALL) -c main.c -o main.o
