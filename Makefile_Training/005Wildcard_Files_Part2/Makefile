@@ -12,7 +12,6 @@
 # LDFLAGS : Extra flags to give to the linker
 
 DEBUG = 1
-EXECUTABLE_NAME = main
 
 C_STANDARD = c17
 C_WARNINGS = -Wall -Wextra -Wpedantic
@@ -26,14 +25,24 @@ LDFLAGS = 							# This is usually important for the linker
 # So we when build we can do : make build DEBUG = 0/1
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -O0
+EXECUTABLE_NAME = mainDebug
 else
 CFLAGS += -O3
+EXECUTABLE_NAME = mainRelease
 endif
 
 COMPILER_CALL = $(CC) $(CFLAGS)		# Remember : the $ is needed to access the value of a variable
 
+# A list of source files using a wildcard function
+C_SOURCES = $(wildcard *.c)
+
 # A list of object files (useful when we have many source files)
-C_OBJECTS = my_lib.o main.o
+# patsubst is a function to substitute patterns, in this case whichever ends with .c 
+# to something with similar name and ends with .o
+# based on the list named C_SOURCES
+# This is necessary because normally object files don't exist before compilation
+# so we can't just create a list directly like C_SOURCES
+C_OBJECTS = $(patsubst %.c, %.o, $(C_SOURCES))
 
 # Note : we can override some variable values when we call make 
 # Ex : make build C_STANDARD=c11
@@ -42,21 +51,12 @@ C_OBJECTS = my_lib.o main.o
 build: $(C_OBJECTS)
 	$(COMPILER_CALL) $(C_OBJECTS) $(LDFLAGS)-o $(EXECUTABLE_NAME)
 
-main.o:
-# This will run as : gcc main.c -c main.o
-	$(COMPILER_CALL) main.c -c 	
-
-my_lib.o:
-# This will run as : gcc my_lib.c -c my_lib.o
-	$(COMPILER_CALL) my_lib.c -c 
-
-
 execute:
-	./main
+	./$(EXECUTABLE_NAME)
 
 clean:
 	rm -f *.o
-	rm -f main
+	rm -f $(EXECUTABLE_NAME)
 
 
 ###################
