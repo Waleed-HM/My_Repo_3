@@ -9,13 +9,24 @@
 # LDFLAGS : Extra flags to give to the linker
 
 DEBUG = 1
+ENABLE_WARNING = 1
+WARNINGS_AS_ERRORS = 0
 
 INCLUDE_DIR = inc
 SOURCE_DIR = src
 BUILD_DIR = build
 
 C_STANDARD = c17
+
+ifeq ($(ENABLE_WARNING), 1)
 C_WARNINGS = -Wall -Wextra -Wpedantic
+else
+C_WARNINGS = 
+endif
+
+ifeq ($(WARNINGS_AS_ERRORS), 1)
+C_WARNINGS += -Werror				# stops the compilation if warnings are found
+endif
 
 CC = gcc
 CFLAGS =  $(C_WARNINGS) -std=$(C_STANDARD)
@@ -40,8 +51,9 @@ C_SOURCES = $(wildcard $(SOURCE_DIR)/*.c)
 
 C_OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES))
 
-create:
-	mkdir $(BUILD_DIR)			# This target is to create the build directory in case it doesn't exist
+###################
+#### TARGETS ######
+###################
 
 build: create $(C_OBJECTS)
 	$(COMPILER_CALL) $(C_OBJECTS) $(LDFLAGS)-o $(BUILD_DIR)/$(EXECUTABLE_NAME)
@@ -50,25 +62,28 @@ execute:
 	./$(BUILD_DIR)/$(EXECUTABLE_NAME)
 
 clean:
-	rm -f $(BUILD_DIR)/*.o
-	rm -f $(BUILD_DIR)/$(EXECUTABLE_NAME)
+# 	rm -f $(BUILD_DIR)/*.o
+# 	rm -f $(BUILD_DIR)/$(EXECUTABLE_NAME)
+	rm -rf $(BUILD_DIR)
 
+create:
+	mkdir -p $(BUILD_DIR)			# This target is to create the build directory in case it doesn't exist
 
 ###################
 #### PATTERNS #####
 ###################
 
 #Patterns are used when otherwise we need to add too many targets because we have too many source files
-
-# $@: The file name of the target
-# $<: The name of the first dependecy
-# $^: The names of all prerequisites
-
-#For every c file in our current directory, generate a corresponding object file with the same name (the %)
-$(BUILD_DIR)%.o: $(SOURCE_DIR)%.c
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(COMPILER_CALL) -c $< -o $@
 
 
 # The past two lines would translate to : (for main.c)
 # main.o: main.c
 # 	$(COMPILER_CALL) -c main.c -o main.o
+
+###################
+#### PHONY  #######
+###################
+# With .PHONY we list all targets that don't correspond to a file name
+.PHONY: create build execute clean
