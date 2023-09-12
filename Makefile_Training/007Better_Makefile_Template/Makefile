@@ -8,9 +8,9 @@
 # CPPFLAGS : Exta flags to give to the C preprocessor
 # LDFLAGS : Extra flags to give to the linker
 
-DEBUG = 1
-ENABLE_WARNING = 1
-WARNINGS_AS_ERRORS = 0
+DEBUG ?= 1
+ENABLE_WARNING ?= 1
+WARNINGS_AS_ERRORS ?= 0
 
 INCLUDE_DIR = inc
 SOURCE_DIR = src
@@ -36,7 +36,7 @@ LDFLAGS =
 
 
 ifeq ($(DEBUG), 1)
-CFLAGS += -g -O0
+CFLAGS += -g -O0					# the -g is to generate debug symbols
 EXECUTABLE_NAME = mainDebug
 else
 CFLAGS += -O3
@@ -50,6 +50,15 @@ C_SOURCES = $(wildcard $(SOURCE_DIR)/*.c)
 
 C_OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES))
 
+
+# Notes : 
+# - by adding @ before any command, we tell it to supress commandline output
+# - To chain some commands, we use && (like when we want to make a directory within another)
+# otherwise, they would not 'occur' in the same terminal instance
+# - ?= only sets variables if they have not yet been set
+# - ifeq ($(strip $(VAR)), ) : checks if the variable is empty
+# - ifdef VAR : checks if the variable is defined
+
 ###################
 #### TARGETS ######
 ###################
@@ -57,6 +66,7 @@ all: create build 				# all : is a naming convention of a target that include ot
 
 create:
 	@mkdir -p $(BUILD_DIR)
+	@cd $(BUILD_DIR) && mkdir -p test
 
 build: create $(C_OBJECTS)
 	$(COMPILER_CALL) $(C_OBJECTS) $(LDFLAGS)-o $(BUILD_DIR)/$(EXECUTABLE_NAME)
@@ -67,7 +77,8 @@ execute:
 clean:
 # 	rm -f $(BUILD_DIR)/*.o
 # 	rm -f $(BUILD_DIR)/$(EXECUTABLE_NAME)
-	rm -rf $(BUILD_DIR)
+	@echo "Removing builds .."
+	@rm -rf $(BUILD_DIR)
 
 			
 
