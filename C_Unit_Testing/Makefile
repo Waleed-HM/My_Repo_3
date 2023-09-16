@@ -42,3 +42,9 @@ $(NAME): $(COBJECTS)
 .PHONY: clean
 clean:
 	rm -f $(COBJECTS)
+	rm -f $(NAME)
+
+# Run built application
+.PHONY: run
+run:
+	./$(NAME)
