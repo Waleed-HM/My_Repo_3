@@ -20,7 +20,7 @@ TEST_GROUP(average_test_group)
 	{
 		// Deinitialize after each test
 	}
-}
+};
 
 // Test the average function
 TEST(average_test_group, simple_test)
