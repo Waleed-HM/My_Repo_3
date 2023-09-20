@@ -44,3 +44,6 @@ ENTRYPOINT ["python3", "tests/test.py"]
 
 # An example to copy a file from local system into the container system:
 # docker cp another-test.py my_container:/tests/another-test.py
+
+# To start the container in interactive mode :
+# docker start -i my_container
