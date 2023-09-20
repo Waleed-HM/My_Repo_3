@@ -41,3 +41,6 @@ ENTRYPOINT ["python3", "tests/test.py"]
 
 # To list the available containers :
 # docker container ls -a
+
+# An example to copy a file from local system into the container system:
+# docker cp another-test.py my_container:/tests/another-test.py
