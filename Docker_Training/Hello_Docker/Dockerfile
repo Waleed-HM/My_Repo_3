@@ -24,3 +24,20 @@ ENTRYPOINT ["python3", "tests/test.py"]
 # That would mean it becomes something like this : $ python3 tests/test.py something else
 # If we don't provide ENTRYPOINT, docker uses a default one : $ /bin/sh -c something else (when CMD is used)
 # Or just : $ /bin/sh -c , if nothing is supplied
+
+
+# Notes :
+# To build the docker image, run in the terminal :
+# docker build -t [image name] .
+# To view images : docker images
+# To create the docker container based on the image, we run the command :
+# docker create -i -t --entrypoint="/bin/bash" --name my_container my_image
+
+# i : interactive mode, keep the container running and allow interactions
+# t : tty : adds a pseudo terminal for command line interaction
+# entrypoint : to override any ENTRYPOINT command in the docker file, in this case we want it to run bash instead of out python script
+# name : to give the container a name
+# my_image : which image to create the container from
+
+# To list the available containers :
+# docker container ls -a
