@@ -27,12 +27,13 @@ ENTRYPOINT ["python3", "tests/test.py"]
 
 
 # Notes :
+
 # To build the docker image, run in the terminal :
 # docker build -t [image name] .
 # To view images : docker images
+
 # To create the docker container based on the image, we run the command :
 # docker create -i -t --entrypoint="/bin/bash" --name my_container my_image
-
 # i : interactive mode, keep the container running and allow interactions
 # t : tty : adds a pseudo terminal for command line interaction
 # entrypoint : to override any ENTRYPOINT command in the docker file, in this case we want it to run bash instead of out python script
@@ -47,3 +48,16 @@ ENTRYPOINT ["python3", "tests/test.py"]
 
 # To start the container in interactive mode :
 # docker start -i my_container
+
+# To remove the container :
+# docker container rm my_container
+
+# To create and run a temporary container :
+# docker run --rm my_image
+# run : combination of create and start
+# --rm : to tell docker to remove the container after running and being done
+
+# To remove an image :
+# docker rmi my_image
+
+# For more about docker commands : docs.docker.com and go to reference-commandline reference-Docker CLI
