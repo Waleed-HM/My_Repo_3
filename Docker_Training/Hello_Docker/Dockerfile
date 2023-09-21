@@ -2,18 +2,21 @@
 FROM ubuntu:22.04
 
 # Install Python on image
+# And also install build-essential for the gcc compiler
 # The RUN command essentially runs some command on the OS running in the docker image
 # The slash (\) tells docker that the command continues in the next line
 RUN \
 	apt-get update && \
-	apt-get install -y python3
+	apt-get install -y python3 && \
+	apt-get install -y build-essential
 
 # Create a directory for out tests
 RUN mkdir /tests
 
-# Copy in our Python script
+# Copy in our Python script and C file under test
 # The COPY command copies something from our local directory (where docker file is) into the image
 COPY test.py /tests/test.py
+COPY main.c /tests/main.c
 
 # Often times, when we create a container, we want it to automatically run some application or test .. etc
 # This command that will be invoked when container starts
