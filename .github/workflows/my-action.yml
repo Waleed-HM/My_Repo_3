@@ -1,3 +1,5 @@
+# More about Github Actions can be found at : docs.github.com/actions
+
 # Name of our workflow
 name: My Test Workflow
 
@@ -12,5 +14,26 @@ jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello, Github Actions!"
-      
+      - name: Say Hello
+        run: echo "Hello, Github Actions!"
+  
+  # Job to build and test our C code
+  needs: [say-hello]
+  runs-on: ubuntu-latest
+  steps:
+
+    # Use github.com/actions/checkout to check out this repo
+    - name: check out this repo
+      uses: actions/checkout@v3
+
+    # Install necessary packages
+    - name: Install dependencies
+      run: sudo apt install -y build-essential python3
+
+    # See where we are in the VM
+    - run: pwd
+
+    # Run our test
+
+    - name: Run test
+      run: python3 CICD_Training/test.py
