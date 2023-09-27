@@ -1,7 +1,7 @@
 import os, subprocess
 
 # Settings
-TEST_DIR = "."				# Directory with our program
+TEST_DIR = "/CICD_Training"	# Directory with our program
 CODE_FILE = "main.c"		# Our C code
 COMPILER_TIMEOUT = 10.0		# Compiler timeout (Seconds)
 RUN_TIMEOUT = 10.0 			# Run timeout (Seconds)	
