@@ -12,5 +12,6 @@ private:
 	float balance;
 public:
 	Account(string, float);
+	~Account();
 };
 #endif
