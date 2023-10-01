@@ -4,4 +4,4 @@ Embedded C/RTOS_Workspace/*/*.launch
 Embedded C/RTOS_Workspace/.metadata/
 Embedded C/RTOS_Workspace/Terminal_Test/
 C_Unit_Testing/tools/
-CPP_Training/*/build/
+CPP_Training/*/output/
