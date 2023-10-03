@@ -10,7 +10,7 @@ SRC_DIR = $(PROJECT_DIR)/src
 TEST_DIR = $(PROJECT_DIR)/tests
 
 # Location of CppUTest (if not already set)
-CPPUTEST_HOME ?= $(PROJECT_DIR)/tools/cpputest-4.0
+CPPUTEST_HOME ?= $(PROJECT_DIR)/../Unit_Testing_Frameworks/cpputest-4.0
 
 # Include and source files for component under test
 INCLUDE_DIRS = $(SRC_DIR)/$(COMPONENT_NAME)
