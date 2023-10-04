@@ -6,3 +6,6 @@ Embedded C/RTOS_Workspace/Terminal_Test/
 C_Unit_Testing/tools/
 CPP_Training/*/output/
 Unit_Testing_Frameworks/
+CPP_Training/*/tests/*/lib
+CPP_Training/*/tests/*/objs
+CPP_Training/*/tests/*/*_tests
