@@ -4,6 +4,7 @@ ENABLE_WARNING ?= 0
 INCLUDE_DIR = inc
 SOURCE_DIR = src
 BUILD_DIR = output
+TEST_DIR = tests
 EXECUTABLE_NAME = app
 
 CXX_STANDARD = c++11
@@ -59,8 +60,14 @@ help:
 	@echo "	- MODE=debug for debug build"
 	@echo "	- MODE=release for release build"
 
+test:
+	make -C $(TEST_DIR)
+
+test_clean:
+	make -C $(TEST_DIR) clean
+
 $(TARGET_DIR)/%.o: $(SOURCE_DIR)/%.cpp
 	$(COMPILER_CALL) -c $< -o $@
 
 
-.PHONY: all create build execute clean help
+.PHONY: all create build execute clean help test test_clean
