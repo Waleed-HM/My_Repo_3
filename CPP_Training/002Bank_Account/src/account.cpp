@@ -15,9 +15,9 @@ Account::~Account()
 	cout << "Account belonging to " << this->name << " has been deleted at end of the program !" << endl;
 }
 
-Return_Code Account::Deposit(float amount)
+retCode Account::Deposit(float amount)
 {
-	Return_Code ret;
+	retCode ret;
 	if(amount <= 0)
 	{
 		ret = Deposit_Error;
@@ -30,9 +30,9 @@ Return_Code Account::Deposit(float amount)
 	return ret;
 }
 
-Return_Code Account::Withdraw(float amount)
+retCode Account::Withdraw(float amount)
 {
-	Return_Code ret;
+	retCode ret;
 	if(amount <= 0 || amount > this->balance)
 	{
 		ret = Withdraw_Error;
@@ -43,4 +43,9 @@ Return_Code Account::Withdraw(float amount)
 		ret = No_Error;
 	}
 	return ret;
+}
+
+float Account::getBalance()
+{
+	return this->balance;
 }

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum Return_Code : int;
+enum retCode : int;
 
 class Account
 {
@@ -15,11 +15,12 @@ private:
 public:
 	Account(string, float);
 	~Account();
-	Return_Code Deposit(float);
-	Return_Code Withdraw(float);
+	retCode Deposit(float);
+	retCode Withdraw(float);
+	float getBalance();
 };
 
-enum Return_Code : int
+enum retCode : int
 {
 	No_Error,
 	Deposit_Error,
