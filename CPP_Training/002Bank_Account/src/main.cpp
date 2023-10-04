@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int main(int argc,char* argv[])
+int main()
 {
 	cout << "Bank Account test project !" << endl;
 	Account Waleed_account("Waleed Alhammami",20000);
