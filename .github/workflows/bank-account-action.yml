@@ -1,0 +1,31 @@
+# Name of workflow
+name: Bank Account Workflow
+
+# Trigger
+on: [push]
+
+# Jobs definition 
+jobs:
+  # Print an intro message
+  intro-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Something
+        run: echo "Running Bank Account Plan !"
+
+  # Job to build and run our C++ Project
+  build-and-run:
+    needs: [intro-message]
+    runs-on: ubuntu-latest
+    steps:
+      # Use github.com/actions/checkout to check out this repo
+      - name: check out this repo
+        uses: actions/checkout@v3
+
+      # Install necessary packages
+      - name: Install dependencies
+        run: sudo apt install -y build-essential python3
+
+      # Build and run the project
+      - name: Build and run
+        run: python3 CPP_Training/002Bank_Account/run.py
