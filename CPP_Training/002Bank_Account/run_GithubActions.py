@@ -37,31 +37,36 @@ if ret.returncode != 0:
 	print("Compilation failed !")
 	exit(1)
 
-# # Run the compiled program
-# print("Running the project ..")
-# try:
-# 	os.chdir("/CPP_Training/002Bank_Account")
-# 	ret = subprocess.run(["cd","CPP_Training/002Bank_Account","&&","make", "execute"],
-# 							stdout=subprocess.PIPE,
-# 							timeout=RUN_TIMEOUT,
-# 							shell=True)
+# Run the compiled program
+print("Running the project ..")
+try:
+	os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
+	ret = subprocess.run(["make", "execute"],
+							stdout=subprocess.PIPE,
+							timeout=RUN_TIMEOUT)
 
-# except Exception as e:
-# 	print("ERROR : Runtime failed !",str(e))
-# 	exit(1)
+except Exception as e:
+	print("ERROR : Runtime failed !",str(e))
+	exit(1)
 
-# # Partse output
-# output = ret.stdout.decode('utf-8')
-# print("Output : \n")
-# print(output)
+# Parse output
+output = ret.stdout.decode('utf-8')
+print("Project output : \n")
+print(output)
+output = ret.stderr.decode('utf-8')
+print(output)
 
 # print("Program ran successfully !")
 
-# # Clean everything
-# print("Cleaning the project !")
-# ret = subprocess.run(["cd","CPP_Training/002Bank_Account","&&","make","clean"],
-# 						stdout=subprocess.PIPE,
-# 						shell=True)
+# Clean everything
+print("Cleaning the project !")
+os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
+ret = subprocess.run(["make","clean"],
+						stdout=subprocess.PIPE)
+
+# Parse cleaning output
+output = ret.stdout.decode('utf-8')
+print(output)
 
 # Exit gracefully
 print("Finishing !")
