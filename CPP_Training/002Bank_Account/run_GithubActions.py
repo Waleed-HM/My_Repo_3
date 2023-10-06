@@ -43,6 +43,7 @@ try:
 	os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
 	ret = subprocess.run(["make", "execute"],
 							stdout=subprocess.PIPE,
+							stderr=subprocess.PIPE,
 							timeout=RUN_TIMEOUT)
 
 except Exception as e:
