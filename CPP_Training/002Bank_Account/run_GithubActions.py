@@ -9,6 +9,9 @@ APP_FILE = "app"
 COMPILER_TIMEOUT = 10.0
 RUN_TIMEOUT = 10.0
 
+# Current working directory
+CURRENT_DIR = os.getcwd()
+
 # Create absolute paths
 code_path = os.path.join(PROJECT_DIR,CODE_DIR,CODE_FILE)
 app_path = os.path.join(PROJECT_DIR,APP_DIR,APP_FILE)
@@ -17,7 +20,7 @@ app_path = os.path.join(PROJECT_DIR,APP_DIR,APP_FILE)
 print("Building ..")
 
 try:
-	os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
+	os.chdir(os.path.join(CURRENT_DIR,"CPP_Training/002Bank_Account"))
 	ret = subprocess.run(["make"],
 							stdout=subprocess.PIPE,
 							stderr=subprocess.PIPE,
@@ -40,7 +43,7 @@ if ret.returncode != 0:
 # Run the compiled program
 print("Running the project ..")
 try:
-	os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
+	os.chdir(os.path.join(CURRENT_DIR,"CPP_Training/002Bank_Account"))
 	ret = subprocess.run(["make", "execute"],
 							stdout=subprocess.PIPE,
 							stderr=subprocess.PIPE,
@@ -61,7 +64,7 @@ print(output)
 
 # Clean everything
 print("Cleaning the project !")
-os.chdir("/home/runner/work/My_Repo_3/My_Repo_3/CPP_Training/002Bank_Account")
+os.chdir(os.path.join(CURRENT_DIR,"CPP_Training/002Bank_Account"))
 ret = subprocess.run(["make","clean"],
 						stdout=subprocess.PIPE)
 
