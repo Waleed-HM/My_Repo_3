@@ -28,4 +28,4 @@ jobs:
 
       # Build and run the project
       - name: Build and run
-        run: python3 CPP_Training/002Bank_Account/run.py
+        run: python3 CPP_Training/002Bank_Account/run_GithubActions.py
