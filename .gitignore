@@ -9,3 +9,9 @@ Unit_Testing_Frameworks/
 CPP_Training/*/tests/*/lib
 CPP_Training/*/tests/*/objs
 CPP_Training/*/tests/*/*_tests
+
+
+.o
+.obj
+.out
+.elf
