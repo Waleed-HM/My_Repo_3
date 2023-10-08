@@ -10,8 +10,10 @@ INC_DIR = $(PROJECT_DIR)/inc
 SRC_DIR = $(PROJECT_DIR)/src
 TEST_DIR = $(PROJECT_DIR)/tests
 
+CPPUTEST_HOME_SUFFIX=../../Unit_Testing_Frameworks/cpputest-4.0
+
 # Location of CppUTest (if not already set)
-CPPUTEST_HOME ?= $(PROJECT_DIR)/../../Unit_Testing_Frameworks/cpputest-4.0
+CPPUTEST_HOME ?= $(PROJECT_DIR)/$(CPPUTEST_HOME_SUFFIX)
 
 # Include and source files for component under test
 INCLUDE_DIRS = $(INC_DIR)
@@ -24,4 +26,4 @@ INCLUDE_DIRS += $(CPPUTEST_HOME)/include
 TEST_SRC_DIRS = $(TEST_DIR)/$(COMPONENT_NAME)
 
 # Run MakefileWorker.mk with the variables set in this Makefile
-include $(CPPUTEST_HOME)/build/MAkefileWorker.mk
+include $(CPPUTEST_HOME)/build/MakefileWorker.mk
