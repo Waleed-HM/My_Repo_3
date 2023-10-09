@@ -15,8 +15,8 @@ private:
 public:
 	Account(string, float);
 	~Account();
-	retCode Deposit(float);
-	retCode Withdraw(float);
+	retCode deposit(float);
+	retCode withdraw(float);
 	float getBalance();
 };
 
