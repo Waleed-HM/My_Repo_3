@@ -29,3 +29,18 @@ jobs:
       # Build and run the project
       - name: Build and run
         run: python3 CPP_Training/002Bank_Account/run_GithubActions.py
+
+  # Job to run the unit tests through the docker container
+  unit-tests:
+    needs: [build-and-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out this repo
+        uses: actions/checkout@v3
+
+      - name: build the docker image
+        working-directory: ./CPP_Training/002Bank_Account
+        run: docker build -t bank_account -f Dockerfile .
+
+      - name: run the image
+        run: docker run --rm bank_account
