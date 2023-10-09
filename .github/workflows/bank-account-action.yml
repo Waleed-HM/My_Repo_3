@@ -32,7 +32,7 @@ jobs:
 
   # Job to run the unit tests through the docker container
   unit-tests:
-    needs: [build-and-test]
+    needs: [build-and-run]
     runs-on: ubuntu-latest
     steps:
       - name: check out this repo
