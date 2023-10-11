@@ -6,7 +6,7 @@ TEST_GROUP(account_test_group)
 {
 	void setup()
 	{
-
+		Initialize_Accounts();
 	}
 
 	void teardown()
