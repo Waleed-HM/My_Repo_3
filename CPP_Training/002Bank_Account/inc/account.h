@@ -15,7 +15,8 @@ class Account
 private:
 	string name;
 	float balance;
-	int ID;
+	double ID;
+	static int total_accounts;
 public:
 	Account(string, float);
 	~Account();
