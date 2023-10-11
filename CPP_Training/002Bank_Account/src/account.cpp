@@ -1,5 +1,11 @@
 #include "account.h"
 #include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+vector<double> ID_pool;
 
 Account::Account(string newName, float value)
 {
@@ -45,7 +51,28 @@ retCode Account::withdraw(float amount)
 	return ret;
 }
 
+string Account::getName()
+{
+	return this->name;
+}
+
 float Account::getBalance()
 {
 	return this->balance;
+}
+
+/* ------------------------------------------- */
+void Initialize_Accounts()
+{
+	initialize_ID_pool();
+}
+
+static void initialize_ID_pool()
+{
+	// Fill the ID pool with values
+	for (int i = 0; i < ID_POOL_SIZE; i++)
+	{
+		ID_pool.push_back(rand() % MAX_ID);
+	}
+	cout << ID_pool.size() << endl;
 }
