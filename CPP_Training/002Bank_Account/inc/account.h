@@ -2,10 +2,11 @@
 #define ACCOUNT_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
-#define ID_POOL_SIZE 1000
+#define ID_POOL_SIZE 20
 #define MAX_ID		 1000000
 
 enum retCode : int;
@@ -18,6 +19,7 @@ private:
 	double ID;
 	static int total_accounts;
 public:
+	Account();
 	Account(string, float);
 	~Account();
 	retCode deposit(float);
@@ -34,6 +36,9 @@ enum retCode : int
 };
 
 void Initialize_Accounts();
-static void initialize_ID_pool();
+vector<double> * create_ID_pool(int, int);
+void delete_ID_pool(vector<double> *);
+void init_ID_pool();
+void deinit_ID_pool();
 
 #endif
