@@ -12,6 +12,6 @@ int main()
 	Account Waleed_account("Waleed Alhammami",20000);
 	Account Kotaiba_account("Kotaiba Alhammami",15000);
 
-	deinit_ID_pool();
+	Deinitialize_Accounts();
 	return 0;
 }

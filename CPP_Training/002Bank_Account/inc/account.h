@@ -30,15 +30,15 @@ public:
 
 enum retCode : int
 {
-	No_Error,
-	Deposit_Error,
-	Withdraw_Error
+	NO_ERROR,
+	DEPOSIT_ERROR,
+	WITHDRAW_ERROR
 };
 
 void Initialize_Accounts();
-vector<double> * create_ID_pool(int, int);
-void delete_ID_pool(vector<double> *);
-void init_ID_pool();
-void deinit_ID_pool();
-
+void Deinitialize_Accounts();
+void create_ID_pool(vector<double> **, int, int);
+void delete_ID_pool(vector<double> **);
+void refresh_rng_seed();
+int pick_random_number(int);
 #endif

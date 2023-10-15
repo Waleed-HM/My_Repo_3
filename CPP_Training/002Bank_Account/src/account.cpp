@@ -5,7 +5,8 @@
 using namespace std;
 
 
-//vector<double> ID_pool;
+vector<double> *P_ID_POOL;
+
 Account::Account()
 {
 	this->name = "No name";
@@ -52,12 +53,12 @@ retCode Account::deposit(float amount)
 	retCode ret;
 	if(amount <= 0)
 	{
-		ret = Deposit_Error;
+		ret = DEPOSIT_ERROR;
 	}
 	else
 	{
 		this->balance += amount;
-		ret = No_Error;
+		ret = NO_ERROR;
 	}
 	return ret;
 }
@@ -67,12 +68,12 @@ retCode Account::withdraw(float amount)
 	retCode ret;
 	if(amount <= 0 || amount > this->balance)
 	{
-		ret = Withdraw_Error;
+		ret = WITHDRAW_ERROR;
 	}
 	else
 	{
 		this->balance -= amount;
-		ret = No_Error;
+		ret = NO_ERROR;
 	}
 	return ret;
 }
@@ -92,38 +93,46 @@ int Account::total_accounts;
 /* ------------------------------------------- */
 void Initialize_Accounts()
 {
-	vector<double> *p_ID_pool = create_ID_pool(ID_POOL_SIZE, MAX_ID);
+	cout << "Initializing accounts !" << endl;
 
-	for (vector<double>::iterator it = (*p_ID_pool).begin(); it < (*p_ID_pool).end(); it++)
+	create_ID_pool(&P_ID_POOL, ID_POOL_SIZE, MAX_ID);
+
+#ifdef ENABLE_DEBUG
+	for (vector<double>::iterator it = (*P_ID_POOL).begin(); it < (*P_ID_POOL).end(); it++)
 	{
 		cout << *it << endl;
 	}
-
-	delete_ID_pool(p_ID_pool);
+#endif
 }
 
-vector<double> * create_ID_pool(int size, int max_id)
+void Deinitialize_Accounts()
 {
-	vector<double> *p_ID_pool = new vector<double>;
-	srand ((unsigned int)time(NULL));
-	for (int i = 0; i < size; i++)
+	cout << "Deinitializing accounts !" << endl;
+	delete_ID_pool(&P_ID_POOL);
+}
+
+void create_ID_pool(vector<double> **p, int size, int max_id)
+{
+	*p = new vector<double>;
+
+	refresh_rng_seed();
+	for(int i = 0; i < size; i++)
 	{
-		(*p_ID_pool).push_back(rand() % max_id);
+		(**p).push_back(pick_random_number(max_id));
 	}
-	return p_ID_pool;
 }
 
-void delete_ID_pool(vector<double> *p)
+void delete_ID_pool(vector<double> **p)
 {
-	delete p;
+	delete *p;
 }
 
-void init_ID_pool()
+void refresh_rng_seed()
 {
-
+	srand((unsigned int)time(NULL));
 }
 
-void deinit_ID_pool()
+int pick_random_number(int max_num)
 {
-
+	return (rand() % max_num);
 }
