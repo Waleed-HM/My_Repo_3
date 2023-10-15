@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define ID_POOL_SIZE 20
+#define ID_POOL_SIZE 1000
 #define MAX_ID		 1000000
 
 enum retCode : int;

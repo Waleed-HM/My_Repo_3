@@ -5,7 +5,7 @@
 using namespace std;
 
 
-vector<double> *P_ID_POOL;
+vector<double> *P_ID_POOL = NULL;
 
 Account::Account()
 {
@@ -20,20 +20,21 @@ Account::Account(string newName, float value)
 	this->balance = value;
 
 	// pick a random value between 0 and the number of IDs left
-	//int id_order = rand() % (ID_POOL_SIZE - this->total_accounts);
+	refresh_rng_seed();
+	int id_order = pick_random_number(ID_POOL_SIZE - this->total_accounts);
 
 	// pick an ID value from the IDs pool vector based on the random value picked and assign it to the new account instance
-	//this->ID = *(ID_pool.begin() + id_order);
+	this->ID = *((*P_ID_POOL).begin() + id_order);
 
 	// erase that value from the IDs pool
-	//ID_pool.erase(ID_pool.begin() + id_order);
+	(*P_ID_POOL).erase((*P_ID_POOL).begin() + id_order);
 
 	// Increment the number of account
 	this->total_accounts++;
 	cout << "A new account has been opened !" << endl;
 	cout << "Name : " << this->name << endl;
 	cout << "Starting balance : " << this->balance << endl;
-	//cout << "ID : " << this->ID << endl;
+	cout << "ID : " << this->ID << endl;
 	cout << "Total accounts: " << this->total_accounts << endl;
 	cout << endl;
 }
@@ -41,7 +42,10 @@ Account::Account(string newName, float value)
 Account::~Account()
 {
 	// Insert the ID of the deleted account back into the ID pool
-	//ID_pool.push_back(this->ID);
+	if (P_ID_POOL != NULL)
+	{
+		(*P_ID_POOL).push_back(this->ID);
+	}
 
 	// Decrement the number of accounts
 	this->total_accounts--;
@@ -109,6 +113,7 @@ void Deinitialize_Accounts()
 {
 	cout << "Deinitializing accounts !" << endl;
 	delete_ID_pool(&P_ID_POOL);
+	P_ID_POOL = NULL;
 }
 
 void create_ID_pool(vector<double> **p, int size, int max_id)
