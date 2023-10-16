@@ -3,11 +3,10 @@
 
 #include <string>
 #include <vector>
+#include "helpers.h"
+#include "constants.h"
 
 using namespace std;
-
-#define ID_POOL_SIZE 1000
-#define MAX_ID		 1000000
 
 enum retCode : int;
 
@@ -35,10 +34,4 @@ enum retCode : int
 	WITHDRAW_ERROR
 };
 
-void Initialize_Accounts();
-void Deinitialize_Accounts();
-void create_ID_pool(vector<double> **, int, int);
-void delete_ID_pool(vector<double> **);
-void refresh_rng_seed();
-int pick_random_number(int);
 #endif
