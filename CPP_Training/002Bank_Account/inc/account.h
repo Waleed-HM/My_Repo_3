@@ -25,13 +25,16 @@ public:
 	retCode withdraw(float);
 	string getName();
 	float getBalance();
+	retCode operator==(Account const&);
 };
 
 enum retCode : int
 {
 	NO_ERROR,
 	DEPOSIT_ERROR,
-	WITHDRAW_ERROR
+	WITHDRAW_ERROR,
+	EQUAL_BALANCE,
+	UNEQUAL_BALANCE
 };
 
 #endif

@@ -92,4 +92,16 @@ float Account::getBalance()
 	return this->balance;
 }
 
+retCode Account::operator==(Account const& target_account)
+{
+	if(this->balance == target_account.balance)
+	{
+		return EQUAL_BALANCE;
+	}
+	else
+	{
+		return UNEQUAL_BALANCE;
+	}
+}
+
 int Account::total_accounts;
