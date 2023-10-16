@@ -2,6 +2,9 @@
 #define ACCOUNT_H
 
 #include <string>
+#include <vector>
+#include "helpers.h"
+#include "constants.h"
 
 using namespace std;
 
@@ -12,19 +15,23 @@ class Account
 private:
 	string name;
 	float balance;
+	double ID;
+	static int total_accounts;
 public:
+	Account();
 	Account(string, float);
 	~Account();
-	retCode Deposit(float);
-	retCode Withdraw(float);
+	retCode deposit(float);
+	retCode withdraw(float);
+	string getName();
 	float getBalance();
 };
 
 enum retCode : int
 {
-	No_Error,
-	Deposit_Error,
-	Withdraw_Error
+	NO_ERROR,
+	DEPOSIT_ERROR,
+	WITHDRAW_ERROR
 };
 
 #endif
