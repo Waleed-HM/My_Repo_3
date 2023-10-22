@@ -8,11 +8,11 @@
 
 using namespace std;
 
-enum retCode : int;
+enum accountRetCode : int;
 
 class Account
 {
-private:
+protected:
 	string name;
 	float balance;
 	double ID;
@@ -21,14 +21,14 @@ public:
 	Account();
 	Account(string, float);
 	~Account();
-	retCode deposit(float);
-	retCode withdraw(float);
+	accountRetCode deposit(float);
+	accountRetCode withdraw(float);
 	string getName();
 	float getBalance();
-	retCode operator==(Account const&);
+	accountRetCode operator==(Account const&);
 };
 
-enum retCode : int
+enum accountRetCode : int
 {
 	NO_ERROR,
 	DEPOSIT_ERROR,
