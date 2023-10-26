@@ -12,10 +12,13 @@ class Account_Ext : public Account
 private:
     Birthdate       birthdate;
     Opening_date    opening_date;
+    float           savings_balance;
 public:
     Account_Ext();
     Account_Ext(string, float, Birthdate);
     ~Account_Ext();
+    accountRetCode depositToSavings(float);
+    accountRetCode withdrawFromSavings(float);
     void printBirthdate();
     void printAllInfo();
 };
