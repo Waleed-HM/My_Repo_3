@@ -92,6 +92,13 @@ float Account::getBalance()
 	return this->balance;
 }
 
+void Account::printAllInfo()
+{
+	cout << "Accout Holder : " << this->name << endl;
+	cout << "Balance : " << this->balance << endl;
+	cout << "ID : " << this->ID << endl;
+}
+
 accountRetCode Account::operator==(Account const& target_account)
 {
 	if(this->balance == target_account.balance)

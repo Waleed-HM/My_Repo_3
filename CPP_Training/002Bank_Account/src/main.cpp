@@ -14,6 +14,10 @@ int main()
 	Account Waleed_account("Waleed Alhammami",20000);
 	Account_Ext Kotaiba_account("Kotaiba Alhammami",15000,{24,5,1994});
 
+	Kotaiba_account.printAllInfo();
+
+	cout << endl;
+	
 	Deinitialize_Accounts();
 
 	return 0;

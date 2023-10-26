@@ -20,3 +20,15 @@ Account_Ext::~Account_Ext()
 {
 
 }
+
+void Account_Ext::printBirthdate()
+{
+    cout << this->birthdate.day << "/" << this->birthdate.month << "/" << this->birthdate.year << endl;
+}
+
+void Account_Ext::printAllInfo()
+{
+    Account::printAllInfo();
+    cout << "Holders birthdate : ";
+    this->printBirthdate();
+}

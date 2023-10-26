@@ -25,6 +25,7 @@ public:
 	accountRetCode withdraw(float);
 	string getName();
 	float getBalance();
+	void printAllInfo();
 	accountRetCode operator==(Account const&);
 };
 

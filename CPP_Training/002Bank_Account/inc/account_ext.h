@@ -16,5 +16,7 @@ public:
     Account_Ext();
     Account_Ext(string, float, Birthdate);
     ~Account_Ext();
+    void printBirthdate();
+    void printAllInfo();
 };
 #endif
