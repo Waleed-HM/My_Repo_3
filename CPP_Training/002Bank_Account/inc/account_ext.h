@@ -19,6 +19,7 @@ public:
     ~Account_Ext();
     accountRetCode depositToSavings(float);
     accountRetCode withdrawFromSavings(float);
+    float getSavingsBalance();
     void printBirthdate();
     void printAllInfo();
 };

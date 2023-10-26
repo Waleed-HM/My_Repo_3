@@ -8,12 +8,14 @@ Account_Ext::Account_Ext()
 {
     this->name = "No name";
 	this->balance = 0;
+    this->savings_balance = 0;
 	this->total_accounts++;
 }
 
 Account_Ext::Account_Ext(string newName, float value, Birthdate date) : Account(newName, value)
 {
     this->birthdate = date;
+    this->savings_balance = 0;
 }
 
 Account_Ext::~Account_Ext()
@@ -51,6 +53,11 @@ accountRetCode Account_Ext::withdrawFromSavings(float amount)
     }
 
     return ret;
+}
+
+float Account_Ext::getSavingsBalance()
+{
+    return this->savings_balance;
 }
 
 void Account_Ext::printBirthdate()
