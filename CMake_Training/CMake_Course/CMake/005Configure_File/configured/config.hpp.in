@@ -1,0 +1,16 @@
+// This is a type of header file that CMake can modify and manipulate
+
+#pragma once
+
+#include <cstdint>
+#include <string_view>
+
+
+// The things inside the @ @ symbols are to be replaced by CMake later (PROJECT_NAME and PROJECT_VERISON are predefined names that CMake will look for)
+// For C language, Char Const* can be using instead of the constexpr
+static constexpr std::string_view project_name = "@PROJECT_NAME@";
+static constexpr std::string_view project_version= "@PROJECT_VERSION@";
+
+static constexpr std::int32_t project_verison_major{@PROJECT_VERSION_MAJOR@};
+static constexpr std::int32_t project_verison_minor{@PROJECT_VERSION_MINOR@};
+static constexpr std::int32_t project_verison_patch{@PROJECT_VERSION_PATCH@};
