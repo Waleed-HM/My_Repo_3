@@ -43,3 +43,15 @@ endif()
 
 # we can also use something like this to define source files location and build location :
 # cmake -S . -B ./build/
+
+
+# we can specify the generator using the -G :
+# ex : cmake -S . -B ./build/ -G "Unix Makefiles"    ------> for Unix
+# ex : cmake -S . -B ./build/ -G "Visual Studio 16 2019"    --------> For Visual Studio on Windows
+
+
+# we can specify the build type using the CMAKE_BUILD_TYPE to be something like Debug (no optimization) or Release (full optimization)
+# ex : cmake -DCMAKE_BUILD_TYPE=Release ..
+
+# passing options in general happen using -D and the option name with no spaces: (same for variable names)
+# ex : cmake -DMY_OPTION=[ON|OFF] ..
