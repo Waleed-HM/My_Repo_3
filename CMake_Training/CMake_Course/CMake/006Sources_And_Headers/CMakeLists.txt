@@ -56,3 +56,8 @@ endif()
 
 # passing options in general happen using -D and the option name with no spaces: (same for variable names)
 # ex : cmake -DMY_OPTION=[ON|OFF] ..
+
+# to compile only a certain target (not the whole project) :
+# cmake --build ./build/ --target ExternalLibraries_Executable
+# - or -
+# run the makefile of the desired library (Unix only)
