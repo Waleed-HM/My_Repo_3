@@ -53,3 +53,42 @@ int pick_random_number(int max_num)
 {
 	return (rand() % max_num);
 }
+
+dateRetCode validate_date(Date_t date)
+{
+	// Accepted dates are between 1900 and 2024
+	if(date.year < MIN_YEAR || date.year > MAX_YEAR || date.day < 1 || date.month < 1 || date.month > 12)
+	{
+		return INVALID_DATE;
+	}
+
+	else
+	{
+		if(date.month == 2 && date.day > 28)
+		{
+			return INVALID_DATE;
+		}
+		else if (date.month == 1 ||
+				 date.month == 3 ||
+				 date.month == 5 ||
+				 date.month == 7 ||
+				 date.month == 8 ||
+				 date.month == 10 ||
+				 date.month == 12)
+				 {
+					if (date.day > 31)
+					{
+						return INVALID_DATE;
+					}
+				 }
+		else
+		{
+			if (date.day > 30)
+			{
+				return INVALID_DATE;
+			}
+		}
+	}
+
+	return VALID_DATE;
+}

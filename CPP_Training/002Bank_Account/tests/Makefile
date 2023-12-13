@@ -13,7 +13,7 @@ $(TEST_DIRS):
 	make -C $@
 
 clean:
-	$(foreach DIR, $(TEST_DIRS), make -C $(DIR) clean)
+	$(foreach DIR, $(TEST_DIRS), make -C $(DIR) clean;)
 
 
 dispaly:
