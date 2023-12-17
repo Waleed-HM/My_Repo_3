@@ -8,4 +8,6 @@ add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_SOURCES})
 
 
 # we also need to link the library to the executable : executable name - some key word - library name
-target_link_libraries(${EXECUTABLE_NAME} PUBLIC ${LIBRARY_NAME})
+target_link_libraries(${EXECUTABLE_NAME} PUBLIC 
+    ${LIBRARY_NAME}
+    nlohmann_json)

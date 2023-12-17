@@ -19,6 +19,13 @@ set(CMAKE_CXX_EXTENSIONS            OFF)    # ----> gcc and g++ have some extend
 set(LIBRARY_NAME "Library")
 set(EXECUTABLE_NAME "Output")
 
+set(CMAKE_MODULE_PATH   "${PROJECT_SOURCE_DIR}/cmake/")         # -----> to let CMake know where the module functions are located
+include(AddGitSubmodule)                                        # -----> to include the .cmake file (where some functions are defined)
+
+# call a function we defined in a .cmake file
+add_git_submodule(external/json)
+
+
 # some options
 # option name - optional hint text - value
 option(COMPILE_EXECUTABLE "Whether to compile the executable" ON)
@@ -61,3 +68,18 @@ endif()
 # cmake --build ./build/ --target ExternalLibraries_Executable
 # - or -
 # run the makefile of the desired library (Unix only)
+
+# to add a submodulde git repo (as a dependency maybe):
+# git submodule add [url to the repo] [path]
+# ex : git submodule add https://github.com/nlohmann/json external/json
+
+# in almost every CMake project there is a cmake folder where we can implement some cmake functions we want
+# usually in that folder are files with .cmake extension
+
+# ------------------------------------------------------------------------------------------------------------
+
+# USEFUL VARIABLES TO REMEMBER :
+
+# PROJECT_SOURCE_DIR : the path to the root directory of the project
+# CMAKE_BINARY_DIR : the absolute path to the build directory
+# CMAKE_MODULE_PATH : stores the absolute path to the folder where the cmake module files
