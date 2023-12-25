@@ -32,6 +32,7 @@ option(COMPILE_EXECUTABLE "Whether to compile the executable" ON)
 
 # We need to add subdirectories (where sub CMake files are located)
 add_subdirectory(configured)
+add_subdirectory(external)
 add_subdirectory(src)
 if(COMPILE_EXECUTABLE)
     add_subdirectory(app)
