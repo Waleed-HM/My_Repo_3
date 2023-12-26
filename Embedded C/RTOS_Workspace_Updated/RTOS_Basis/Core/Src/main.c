@@ -58,7 +58,8 @@ static void MX_GPIO_Init(void);
 void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
-
+void vTaskLedBlue(void *pvParameters);
+void vTaskLedGreen(void *pvParameters);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -119,10 +120,21 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  // Blue LED task
+  if((xTaskCreate(vTaskLedBlue, "Task LED Blue", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
+  {
+
+  }
+
+  // Green LED task
+  if((xTaskCreate(vTaskLedGreen, "Task LED Green", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
+  {
+
+  }
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -230,7 +242,33 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void vTaskLedBlue(void *pvParameters)
+{
+	//Variable Declarations
 
+	//Infinite Loop
+	for(;;)
+	{
+		HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
+	//Delete the task if the loop is broken
+	vTaskDelete(NULL);
+}
+
+void vTaskLedGreen(void *pvParameters)
+{
+	//Variable Declarations
+
+	//Infinite Loop
+	for(;;)
+	{
+		HAL_GPIO_TogglePin(LED_Green_GPIO_Port, LED_Green_Pin);
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+	}
+	//Delete the task if the loop is broken
+	vTaskDelete(NULL);
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
