@@ -13,3 +13,5 @@ To setup SEGGER systemview with the project :
 - Inside SEGGER/Syscalls, delete all files except the GCC one which we need
 - In the CubeIDE, refresh the project explorer and check to confirm that the SEGGER folder we added is not excluded from the build: Go to its Properties->C/C++ General->Paths and Symbols
 - Add the new folders to the build: Go to project properties->C/C++ General->Paths and Symbols and from there click Add and select the new folders Config, OS, Patch, SEGGER.
+- In the patch file inside the Patch folder, correct the 1st 3 lines to point correctly to the FreeRTOSConfig.h file, such that the paths are like : Core/Inc/.. or new/Core/Inc to match out project paths.
+- Similar paths corrections are needed in the file for generic and CM4F specific lines.

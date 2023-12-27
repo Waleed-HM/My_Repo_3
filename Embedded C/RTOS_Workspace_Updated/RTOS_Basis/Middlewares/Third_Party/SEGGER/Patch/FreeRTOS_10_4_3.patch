@@ -1,6 +1,6 @@
-diff -rupN org/config/FreeRTOSConfig.h new/config/FreeRTOSConfig.h
---- org/config/FreeRTOSConfig.h	2020-12-15 19:53:08.000000000 +0100
-+++ new/config/FreeRTOSConfig.h	2021-03-10 13:28:14.645130255 +0100
+diff -rupN Core/Inc/FreeRTOSConfig.h new/Core/Inc/FreeRTOSConfig.h
+--- Core/Inc/FreeRTOSConfig.h	2020-12-15 19:53:08.000000000 +0100
++++ new/Core/Inc/FreeRTOSConfig.h	2021-03-10 13:28:14.645130255 +0100
 @@ -91,6 +91,10 @@ to exclude the API function. */
  #define INCLUDE_vTaskDelayUntil			1
  #define INCLUDE_vTaskDelay				1
@@ -12,9 +12,9 @@ diff -rupN org/config/FreeRTOSConfig.h new/config/FreeRTOSConfig.h
  
  /* Cortex-M specific definitions. */
  #ifdef __NVIC_PRIO_BITS
-diff -rupN org/FreeRTOS/Source/include/FreeRTOS.h new/FreeRTOS/Source/include/FreeRTOS.h
---- org/FreeRTOS/Source/include/FreeRTOS.h	2020-12-15 19:54:26.000000000 +0100
-+++ new/FreeRTOS/Source/include/FreeRTOS.h	2021-03-10 14:58:58.000000000 +0100
+diff -rupN org/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h new/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+--- Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h	2020-12-15 19:54:26.000000000 +0100
++++ new/Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h	2021-03-10 14:58:58.000000000 +0100
 @@ -182,6 +182,10 @@
      #define INCLUDE_uxTaskGetStackHighWaterMark2    0
  #endif
@@ -69,9 +69,9 @@ diff -rupN org/FreeRTOS/Source/include/FreeRTOS.h new/FreeRTOS/Source/include/Fr
  #ifndef traceSTREAM_BUFFER_CREATE_FAILED
      #define traceSTREAM_BUFFER_CREATE_FAILED( xIsMessageBuffer )
  #endif
-diff -rupN org/FreeRTOS/Source/include/task.h new/FreeRTOS/Source/include/task.h
---- org/FreeRTOS/Source/include/task.h	2020-12-15 19:54:26.000000000 +0100
-+++ new/FreeRTOS/Source/include/task.h	2021-03-03 10:07:46.000000000 +0100
+diff -rupN Middlewares/Third_Party/FreeRTOS/Source/include/task.h new/Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+--- Middlewares/Third_Party/FreeRTOS/Source/include/task.h	2020-12-15 19:54:26.000000000 +0100
++++ new/Middlewares/Third_Party/FreeRTOS/Source/include/task.h	2021-03-03 10:07:46.000000000 +0100
 @@ -1538,6 +1538,25 @@ UBaseType_t uxTaskGetStackHighWaterMark(
   */
  configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
@@ -168,9 +168,9 @@ diff -rupN org/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h new/FreeRTOS/Sou
      #define portYIELD_FROM_ISR( x )                     portEND_SWITCHING_ISR( x )
  /*-----------------------------------------------------------*/
  
-diff -rupN org/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c new/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
---- org/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c	2020-12-15 19:54:26.000000000 +0100
-+++ new/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c	2021-03-03 10:25:28.000000000 +0100
+diff -rupN Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c new/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
+--- Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c	2020-12-15 19:54:26.000000000 +0100
++++ new/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c	2021-03-03 10:25:28.000000000 +0100
 @@ -498,14 +498,20 @@ void xPortSysTickHandler( void )
       * save and then restore the interrupt mask value as its value is already
       * known. */
@@ -192,9 +192,9 @@ diff -rupN org/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c new/FreeRTOS/Source/
      }
      portENABLE_INTERRUPTS();
  }
-diff -rupN org/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h new/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h
---- org/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h	2020-12-15 19:54:26.000000000 +0100
-+++ new/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h	2021-03-03 10:26:06.000000000 +0100
+diff -rupN Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h new/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h
+--- Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h	2020-12-15 19:54:26.000000000 +0100
++++ new/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h	2021-03-03 10:26:06.000000000 +0100
 @@ -90,7 +90,7 @@
  
      #define portNVIC_INT_CTRL_REG     ( *( ( volatile uint32_t * ) 0xe000ed04 ) )
@@ -204,9 +204,9 @@ diff -rupN org/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h new/FreeRTOS/So
      #define portYIELD_FROM_ISR( x )                     portEND_SWITCHING_ISR( x )
  /*-----------------------------------------------------------*/
  
-diff -rupN org/FreeRTOS/Source/tasks.c new/FreeRTOS/Source/tasks.c
---- org/FreeRTOS/Source/tasks.c	2020-12-15 19:54:28.000000000 +0100
-+++ new/FreeRTOS/Source/tasks.c	2021-03-10 14:59:11.000000000 +0100
+diff -rupN Middlewares/Third_Party/FreeRTOS/Source/tasks.c new/Middlewares/Third_Party/FreeRTOS/Source/tasks.c
+--- Middlewares/Third_Party/FreeRTOS/Source/tasks.c	2020-12-15 19:54:28.000000000 +0100
++++ new/Middlewares/Third_Party/FreeRTOS/Source/tasks.c	2021-03-10 14:59:11.000000000 +0100
 @@ -1735,7 +1735,7 @@ static void prvAddNewTaskToReadyList( TC
              {
                  mtCOVERAGE_TEST_MARKER();
