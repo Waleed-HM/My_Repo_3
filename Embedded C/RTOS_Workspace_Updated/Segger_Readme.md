@@ -15,3 +15,5 @@ To setup SEGGER systemview with the project :
 - Add the new folders to the build: Go to project properties->C/C++ General->Paths and Symbols and from there click Add and select the new folders Config, OS, Patch, SEGGER.
 - In the patch file inside the Patch folder, correct the 1st 3 lines to point correctly to the FreeRTOSConfig.h file, such that the paths are like : Core/Inc/.. or new/Core/Inc to match out project paths.
 - Similar paths corrections are needed in the file for generic and CM4F specific lines.
+- After that, apply the patch by right clicking on the project and going to Team->Apply Patch and selecting the patch file. There might be a lot of manually needed fixing from there (can take some time).
+- In SEGGER/SEGGER/SEGGER_SYSVIEW_ConfDefaults.h : confirm that the SGGER_SYSVIEW_CORE is defined as SEGGER_SYSVIEW_CODE_CM3 (which includes M3/M4/M7)

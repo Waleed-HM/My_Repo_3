@@ -122,7 +122,10 @@ to exclude the API function. */
  * by the application thus the correct define need to be enabled below
  */
 #define USE_FreeRTOS_HEAP_4
+#define INCLUDE_xTaskGetIdleTaskHandle   1
+#define INCLUDE_pxTaskGetStackStart      1
 
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS
  /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */

@@ -847,6 +847,29 @@ void vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, const TickType_t xT
 BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
+ * task.h
+ * <PRE>uint8_t* pxTaskGetStackStart( TaskHandle_t xTask);</PRE>
+ *
+ * INCLUDE_pxTaskGetStackStart must be set to 1 in FreeRTOSConfig.h for
+ * this function to be available.
+ *
+ * Returns the start of the stack associated with xTask.  That is,
+ * the highest stack memory address on architectures where the stack grows down
+ * from high memory, and the lowest memory address on architectures where the
+ * stack grows up from low memory.
+ *
+ * @param xTask Handle of the task associated with the stack returned.
+ * Set xTask to NULL to return the stack of the calling task.
+ *
+ * @return A pointer to the start of the stack.
+ */
+uint8_t* pxTaskGetStackStart( TaskHandle_t xTask) PRIVILEGED_FUNCTION;
+
+/* When using trace macros it is sometimes necessary to include task.h before
+ * FreeRTOS.h.  When this is done TaskHookFunction_t will not yet have been defined,
+ * so the following two prototypes will cause a compilation error.  This can be
+
+/**
  * task. h
  * <pre>UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask );</pre>
  *
@@ -2272,7 +2295,7 @@ void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
 	// spent in the Blocked state does not exceed MAX_TIME_TO_WAIT. This
 	// continues until either the buffer contains at least uxWantedBytes bytes,
 	// or the total amount of time spent in the Blocked state reaches
-	// MAX_TIME_TO_WAIT – at which point the task reads however many bytes are
+	// MAX_TIME_TO_WAIT â€“ at which point the task reads however many bytes are
 	// available up to a maximum of uxWantedBytes.
 
 	size_t xUART_Receive( uint8_t *pucBuffer, size_t uxWantedBytes )
