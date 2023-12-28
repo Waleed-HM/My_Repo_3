@@ -17,3 +17,4 @@ To setup SEGGER systemview with the project :
 - Similar paths corrections are needed in the file for generic and CM4F specific lines.
 - After that, apply the patch by right clicking on the project and going to Team->Apply Patch and selecting the patch file. There might be a lot of manually needed fixing from there (can take some time).
 - In SEGGER/SEGGER/SEGGER_SYSVIEW_ConfDefaults.h : confirm that the SGGER_SYSVIEW_CORE is defined as SEGGER_SYSVIEW_CODE_CM3 (which includes M3/M4/M7)
+- (We might want to increase SEGGER buffer size, by default it is 1024 - line 268 in SEGGER_SYSVIEW_ConfDefaults.h - we can multiply by 4)
