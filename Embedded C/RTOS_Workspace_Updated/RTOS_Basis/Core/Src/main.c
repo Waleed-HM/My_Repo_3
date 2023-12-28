@@ -49,7 +49,7 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
-#define DWT_CTRL (*(volatile unint32_t*) 0xE0001000)		// Bit 0 in this register can enable/disable the DWT_CYCCNT register
+#define DWT_CTRL (*(volatile uint32_t*) 0xE0001000)		// Bit 0 in this register can enable/disable the DWT_CYCCNT register
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
