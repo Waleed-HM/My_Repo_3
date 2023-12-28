@@ -19,3 +19,6 @@ To setup SEGGER systemview with the project :
 - In SEGGER/SEGGER/SEGGER_SYSVIEW_ConfDefaults.h : confirm that the SGGER_SYSVIEW_CORE is defined as SEGGER_SYSVIEW_CODE_CM3 (which includes M3/M4/M7)
 - (We might want to increase SEGGER buffer size, by default it is 1024 - line 268 in SEGGER_SYSVIEW_ConfDefaults.h - we can multiply by 4)
 - Optional : in SGGER/Config/SEGGER_SYSVIEW_Config_FreeRTOS.c, we can change some descriptive info like App Name and Device name
+- We need to enable a cycle counter to add timestamp information to out application events : in main.c, we define the DWT_CTRL register ( in our case it's on address 0xE0001000 )
+- We enable the count register DWT_CYCCNT and setting the 0th bit in the DWT_CTRL register
+- We call the SEGGER_SYSVIEW_Conf() and SEGGER_SYSVIEW_Start() functions to configure and start the recording of data

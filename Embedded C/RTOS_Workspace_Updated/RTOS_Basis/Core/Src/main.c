@@ -49,7 +49,7 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
-
+#define DWT_CTRL (*(volatile unint32_t*) 0xE0001000)		// Bit 0 in this register can enable/disable the DWT_CYCCNT register
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,6 +123,12 @@ int main(void)
   //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+  // Enable the DWT_CYCCNT register (the cycle counter, to enable SEGGER time stamps)
+  DWT_CTRL |= (1 << 0);
+
+  SEGGER_SYSVIEW_Conf();
+  SEGGER_SYSVIEW_Start();
+
   /* add threads, ... */
   // Blue LED task
   if((xTaskCreate(vTaskLedBlue, "Task LED Blue", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
