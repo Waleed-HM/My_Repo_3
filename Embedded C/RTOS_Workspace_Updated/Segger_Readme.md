@@ -23,3 +23,16 @@ To setup SEGGER systemview with the project :
 - We enable the count register DWT_CYCCNT and setting the 0th bit in the DWT_CTRL register
 - We call the SEGGER_SYSVIEW_Conf() and SEGGER_SYSVIEW_Start() functions to configure and start the recording of data
 - To avoid an issue with having to start the Sysview before the FreeRTOS scheduler, we go to rootFolder/Core/Src/stm32xxxx_hal_msp.c and we call NVIC_SetPriorityGrouping(0) inside HAL_MspInit()
+
+
+To take a single shot recording that we can view in the SEGGER Sysview app :
+
+- Run the debug session (letting it run for a bit) and then pause the session
+- Go to Expressions in the debug view mode and define the expression : _SEGGER_RTT
+- Inside this expression we find aUp -> aUp[1] -> pBuffer , this buffer has the collected data that we need
+- Copy the value assigned to pBuffer (basically the address of that buffer) and go to Window -> Show View -> Memory Browser
+- Paste the copied address there. That will takes us to the data collected by the Sysview
+- Click "Export" which is located to the right in the Memory Browser and select RAW Binary as the format
+- In the Length field, set the value found in aUp -> aUp[1] -> WrOff
+- Save the fild in a convenient location (such as a new folder inside the project) and set .SVdat as an extension
+- Load up the file in the SEGGER SystemView application
