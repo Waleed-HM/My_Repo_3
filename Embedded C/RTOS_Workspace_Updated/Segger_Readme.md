@@ -22,3 +22,4 @@ To setup SEGGER systemview with the project :
 - We need to enable a cycle counter to add timestamp information to out application events : in main.c, we define the DWT_CTRL register ( in our case it's on address 0xE0001000 )
 - We enable the count register DWT_CYCCNT and setting the 0th bit in the DWT_CTRL register
 - We call the SEGGER_SYSVIEW_Conf() and SEGGER_SYSVIEW_Start() functions to configure and start the recording of data
+- To avoid an issue with having to start the Sysview before the FreeRTOS scheduler, we go to rootFolder/Core/Src/stm32xxxx_hal_msp.c and we call NVIC_SetPriorityGrouping(0) inside HAL_MspInit()

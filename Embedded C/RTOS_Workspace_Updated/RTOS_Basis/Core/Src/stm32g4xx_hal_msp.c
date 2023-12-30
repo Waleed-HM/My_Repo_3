@@ -79,7 +79,8 @@ void HAL_MspInit(void)
   HAL_PWREx_DisableUCPDDeadBattery();
 
   /* USER CODE BEGIN MspInit 1 */
-
+  // Scheduler starting after Sysview start ! So we call NVIC_SetPriorityGrouping
+  NVIC_SetPriorityGrouping(0);
   /* USER CODE END MspInit 1 */
 }
 
