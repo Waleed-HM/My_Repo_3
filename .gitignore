@@ -1,7 +1,7 @@
-Embedded C/RTOS_Workspace/*/.settings
-Embedded C/RTOS_Workspace/*/Debug
-Embedded C/RTOS_Workspace/*/*.launch
-Embedded C/RTOS_Workspace/.metadata/
+Embedded C/*/*/.settings
+Embedded C/*/*/Debug
+Embedded C/*/*/*.launch
+Embedded C/*/.metadata/
 Embedded C/RTOS_Workspace/Terminal_Test/
 C_Unit_Testing/tools/
 CPP_Training/*/output/

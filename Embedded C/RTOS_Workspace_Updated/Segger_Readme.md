@@ -1,0 +1,38 @@
+To setup SEGGER systemview with the project :
+
+- Download the package from the official website
+- It has 3 folders : Config, Sample, SEGGER
+- Go to rootFolder/Middlewares/Third_Party
+- Create the folder : SEGGER
+- Inside that folder, make new folders: Config, OS, Patch, SEGGER
+- Copy the content of Config from the downloaded package to the folder Config we created
+- In the downloaded package, go to : Sample/FreeRTOSV10.4/Config/Cortex-M and copy the file there to : rootFolder/Middlewares/Third_Party/SEGGER/Config
+- From the FreeRTOSV10.4 folder, copy the H and C files there to the OS folder that we created earlier
+- From FreeRTOSV10.4/Patch, copy the available patch file there to the Patch folder we created earlier
+- From the SEGGER folder in the downloaded package, copy all content to rootFolder/Middlewares/Third_Party/SEGGER/SEGGER
+- Inside SEGGER/Syscalls, delete all files except the GCC one which we need
+- In the CubeIDE, refresh the project explorer and check to confirm that the SEGGER folder we added is not excluded from the build: Go to its Properties->C/C++ General->Paths and Symbols
+- Add the new folders to the build: Go to project properties->C/C++ General->Paths and Symbols and from there click Add and select the new folders Config, OS, Patch, SEGGER.
+- In the patch file inside the Patch folder, correct the 1st 3 lines to point correctly to the FreeRTOSConfig.h file, such that the paths are like : Core/Inc/.. or new/Core/Inc to match out project paths.
+- Similar paths corrections are needed in the file for generic and CM4F specific lines.
+- After that, apply the patch by right clicking on the project and going to Team->Apply Patch and selecting the patch file. There might be a lot of manually needed fixing from there (can take some time).
+- In SEGGER/SEGGER/SEGGER_SYSVIEW_ConfDefaults.h : confirm that the SGGER_SYSVIEW_CORE is defined as SEGGER_SYSVIEW_CODE_CM3 (which includes M3/M4/M7)
+- (We might want to increase SEGGER buffer size, by default it is 1024 - line 268 in SEGGER_SYSVIEW_ConfDefaults.h - we can multiply by 4)
+- Optional : in SGGER/Config/SEGGER_SYSVIEW_Config_FreeRTOS.c, we can change some descriptive info like App Name and Device name
+- We need to enable a cycle counter to add timestamp information to out application events : in main.c, we define the DWT_CTRL register ( in our case it's on address 0xE0001000 )
+- We enable the count register DWT_CYCCNT and setting the 0th bit in the DWT_CTRL register
+- We call the SEGGER_SYSVIEW_Conf() and SEGGER_SYSVIEW_Start() functions to configure and start the recording of data
+- To avoid an issue with having to start the Sysview before the FreeRTOS scheduler, we go to rootFolder/Core/Src/stm32xxxx_hal_msp.c and we call NVIC_SetPriorityGrouping(0) inside HAL_MspInit()
+
+
+To take a single shot recording that we can view in the SEGGER Sysview app :
+
+- Run the debug session (letting it run for a bit) and then pause the session
+- Go to Expressions in the debug view mode and define the expression : _SEGGER_RTT
+- Inside this expression we find aUp -> aUp[1] -> pBuffer , this buffer has the collected data that we need
+- Copy the value assigned to pBuffer (basically the address of that buffer) and go to Window -> Show View -> Memory Browser
+- Paste the copied address there. That will takes us to the data collected by the Sysview
+- Click "Export" which is located to the right in the Memory Browser and select RAW Binary as the format
+- In the Length field, set the value found in aUp -> aUp[1] -> WrOff
+- Save the fild in a convenient location (such as a new folder inside the project) and set .SVdat as an extension
+- Load up the file in the SEGGER SystemView application
