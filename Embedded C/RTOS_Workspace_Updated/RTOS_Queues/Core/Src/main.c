@@ -22,7 +22,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "queue.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +55,8 @@ const osThreadAttr_t defaultTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 #define DWT_CTRL (*(volatile uint32_t*) 0xE0001000)		// Bit 0 in this register can enable/disable the DWT_CYCCNT register
+
+QueueHandle_t xQueue;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,6 +68,8 @@ void StartDefaultTask(void *argument);
 /* USER CODE BEGIN PFP */
 void vTaskLedBlue(void *pvParameters);
 void vTaskLedGreen(void *pvParameters);
+void vTaskSendQueue(void *pvParameters);
+void vTaskReceiveQueue(void *pvParameters);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -120,11 +127,19 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  // Create a 10 element 32bit queue
+  xQueue = xQueueCreate(10, sizeof(uint32_t));
+  if (xQueue == NULL)
+  {
+	  // Queue created failed ! Transmit a message on the UART
+	  char queue_error_msg[] = "Error during Queue creation !";
+	  HAL_UART_Transmit(&huart2, (uint8_t*)queue_error_msg, strlen(queue_error_msg), 1000);
+  }
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   // Enable the DWT_CYCCNT register (the cycle counter, to enable SEGGER time stamps)
@@ -137,13 +152,33 @@ int main(void)
   // Blue LED task
   if((xTaskCreate(vTaskLedBlue, "Task LED Blue", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
   {
-
+	  // Task Creation failed
+	  char task1_error_msg[] = "Error during Blue LED task creation !";
+	  HAL_UART_Transmit(&huart2, (uint8_t*)task1_error_msg, strlen(task1_error_msg), 1000);
   }
 
   // Green LED task
   if((xTaskCreate(vTaskLedGreen, "Task LED Green", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
   {
+	  // Task Creation failed
+	  char task2_error_msg[] = "Error during Green LED task creation !";
+	  HAL_UART_Transmit(&huart2, (uint8_t*)task2_error_msg, strlen(task2_error_msg), 1000);
+  }
 
+  // Create a task to send the queue
+  if((xTaskCreate(vTaskSendQueue, "Task Send Queue", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
+  {
+	  // Task Creation failed
+	  char queue_send_task_error_msg[] = "Error during queue send task creation !";
+	  HAL_UART_Transmit(&huart2, (uint8_t*)queue_send_task_error_msg, strlen(queue_send_task_error_msg), 1000);
+  }
+
+  // Create a task to receive the queue
+  if((xTaskCreate(vTaskReceiveQueue, "Task Receive Queue", configMINIMAL_STACK_SIZE, NULL, 1, NULL)) != pdTRUE)
+  {
+	  // Task Creation failed
+	  char queue_receive_task_error_msg[] = "Error during queue receive task creation !";
+	  HAL_UART_Transmit(&huart2, (uint8_t*)queue_receive_task_error_msg, strlen(queue_receive_task_error_msg), 1000);
   }
   /* USER CODE END RTOS_THREADS */
 
@@ -308,8 +343,9 @@ void vTaskLedBlue(void *pvParameters)
 	for(;;)
 	{
 		HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
-		vTaskDelay(1000 / portTICK_PERIOD_MS);
+		vTaskDelay(100 / portTICK_PERIOD_MS);
 	}
+
 	//Delete the task if the loop is broken
 	vTaskDelete(NULL);
 }
@@ -322,8 +358,65 @@ void vTaskLedGreen(void *pvParameters)
 	for(;;)
 	{
 		HAL_GPIO_TogglePin(LED_Green_GPIO_Port, LED_Green_Pin);
-		vTaskDelay(500 / portTICK_PERIOD_MS);
+		vTaskDelay(50 / portTICK_PERIOD_MS);
 	}
+
+	//Delete the task if the loop is broken
+	vTaskDelete(NULL);
+}
+
+void vTaskSendQueue(void *pvParameters)
+{
+	//Variable Declarations
+	uint32_t counterSend = 0;
+	char txText[50];
+
+	//Infinite Loop
+	for(;;)
+	{
+		// If the queue is full, wait until the queue becomes free
+		// Careful that if the queue never free up, the task will wait forever
+		if((xQueueSend(xQueue, &counterSend, portMAX_DELAY)) == pdPASS)
+		{
+			sprintf(txText, "Queue Send, value: %ld \n", counterSend);
+			//taskENTER_CRITICAL();
+			vTaskSuspendAll();			// Temporary measure, suspends all other tasks to prevent them from using the resource (USART)
+			HAL_UART_Transmit(&huart2, (uint8_t*)txText, strlen(txText), 1000);
+			//taskEXIT_CRITICAL();
+			xTaskResumeAll();
+			counterSend++;
+		}
+
+		vTaskDelay(100 / portTICK_PERIOD_MS);
+	}
+
+	//Delete the task if the loop is broken
+	vTaskDelete(NULL);
+}
+
+void vTaskReceiveQueue(void *pvParameters)
+{
+	//Variable Declarations
+	uint32_t counterReceive = 0;
+	char txText[50];
+
+	//Infinite Loop
+	for(;;)
+	{
+		// Wait until the queue receives some value
+		if((xQueueReceive(xQueue, &counterReceive, portMAX_DELAY)) == pdPASS)
+		{
+			sprintf(txText, "Queue Receive, value: %ld \n", counterReceive);
+			//taskENTER_CRITICAL();
+			vTaskSuspendAll();			// Temporary measure, suspends all other tasks to prevent them from using the resource (USART)
+			HAL_UART_Transmit(&huart2, (uint8_t*)txText, strlen(txText), 1000);
+			//taskEXIT_CRITICAL();
+			xTaskResumeAll();
+		}
+
+		vTaskDelay(100 / portTICK_PERIOD_MS);
+	}
+
 	//Delete the task if the loop is broken
 	vTaskDelete(NULL);
 }
