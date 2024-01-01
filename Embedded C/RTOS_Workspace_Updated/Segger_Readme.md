@@ -36,3 +36,8 @@ To take a single shot recording that we can view in the SEGGER Sysview app :
 - In the Length field, set the value found in aUp -> aUp[1] -> WrOff
 - Save the fild in a convenient location (such as a new folder inside the project) and set .SVdat as an extension
 - Load up the file in the SEGGER SystemView application
+
+
+IMPORTANT :
+- In FreeRTOSConfig.h, there are a few lines that were added by the patch file. If we make any changes in the project and regenerate the code, they will be lost again.
+- Therefore, we can for example make a backup copy of this file for this purpose and use it again if we regenerate the code.
