@@ -57,6 +57,9 @@ Revision: $Rev: 24316 $
 
 #include <reent.h>  // required for _write_r
 #include "SEGGER_RTT.h"
+#include "stm32g4xx_hal.h"
+
+extern UART_HandleTypeDef huart2;
 
 
 /*********************************************************************
@@ -99,6 +102,8 @@ _ssize_t _write_r(struct _reent *r, int file, const void *ptr, size_t len);
 */
 _ssize_t _write(int file, const void *ptr, size_t len) {
   (void) file;  /* Not used, avoid warning */
+
+
   SEGGER_RTT_Write(0, ptr, len);
   return len;
 }
@@ -116,6 +121,7 @@ _ssize_t _write(int file, const void *ptr, size_t len) {
 _ssize_t _write_r(struct _reent *r, int file, const void *ptr, size_t len) {
   (void) file;  /* Not used, avoid warning */
   (void) r;     /* Not used, avoid warning */
+  HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, 1000);
   SEGGER_RTT_Write(0, ptr, len);
   return len;
 }
