@@ -376,7 +376,10 @@ void vTaskSendQueue(void *pvParameters)
 	{
 		// If the queue is full, wait until the queue becomes free
 		// Careful that if the queue never free up, the task will wait forever
-		if((xQueueSend(xQueue, &counterSend, portMAX_DELAY)) == pdPASS)
+		// NOTE : using portMAX_DELAY will make it sit there and wait for space to empty up in the queue
+		// If we don't want that, we need to use another value
+		//if((xQueueSend(xQueue, &counterSend, portMAX_DELAY)) == pdPASS)
+		if((xQueueSend(xQueue, &counterSend, 10 / portTICK_PERIOD_MS)) == pdPASS)
 		{
 			sprintf(txText, "Queue Send, value: %ld \n", counterSend);
 			//taskENTER_CRITICAL();
@@ -385,6 +388,13 @@ void vTaskSendQueue(void *pvParameters)
 			//taskEXIT_CRITICAL();
 			xTaskResumeAll();
 			counterSend++;
+		}
+		else
+		{
+			vTaskSuspendAll();
+			sprintf(txText, "Queue is full !\n");
+			HAL_UART_Transmit(&huart2, (uint8_t*)txText, strlen(txText), 1000);
+			xTaskResumeAll();
 		}
 
 		vTaskDelay(100 / portTICK_PERIOD_MS);
@@ -414,7 +424,7 @@ void vTaskReceiveQueue(void *pvParameters)
 			xTaskResumeAll();
 		}
 
-		vTaskDelay(100 / portTICK_PERIOD_MS);
+		vTaskDelay(20 / portTICK_PERIOD_MS);
 	}
 
 	//Delete the task if the loop is broken
